@@ -30,4 +30,54 @@ defmodule SpiralMemory do
   end
 end
 
-IO.puts SpiralMemory.dist_to_core(347_991)
+defmodule SpiralMemory2 do
+  def solve(n) do
+    start_walking(%{{0, 0} => 1}, {0, 0}, 2, n)
+  end
+
+  defp start_walking(map, prev, steps, number) do
+    {new_map, current, value} =
+      {map, prev, 1} |> walk(1, {1, 0}, number)
+                          |> walk(steps-1, {0, 1}, number)
+                          |> walk(steps, {-1, 0}, number)
+                          |> walk(steps, {0, -1}, number)
+                          |> walk(steps, {1, 0}, number)
+
+    if value > number do
+      value
+    else
+      start_walking(new_map, current, steps + 2, number)
+    end
+  end
+
+  defp walk({map, step, last_number}, 0, _, _), do: {map, step, last_number}
+  defp walk({map, step, last_number}, _, _, number) when last_number > number do
+    {map, step, last_number}
+  end
+  defp walk({map, previous_step, _}, steps, direction, number) do
+    current = take_step(previous_step, direction)
+    new_value = get_values(map, current)
+    new_map = Map.put(map, current, new_value)
+    result = {new_map, current, new_value}
+    walk(result, steps - 1, direction, number)
+  end
+
+  defp take_step({prev_x, prev_y}, {dir_x, dir_y}) do
+    {prev_x + dir_x, prev_y + dir_y}
+  end
+
+  defp get_values(map, {x, y}) do
+    Map.get(map, {x-1, y}, 0)
+    + Map.get(map, {x-1, y + 1}, 0)
+    + Map.get(map, {x-1, y - 1}, 0)
+    + Map.get(map, {x, y - 1}, 0)
+    + Map.get(map, {x, y + 1}, 0)
+    + Map.get(map, {x + 1, y - 1}, 0)
+    + Map.get(map, {x + 1, y + 1}, 0)
+    + Map.get(map, {x + 1, y}, 0)
+  end
+end
+
+input = 347_991
+IO.puts SpiralMemory.dist_to_core(input)
+IO.puts SpiralMemory2.solve(input)
