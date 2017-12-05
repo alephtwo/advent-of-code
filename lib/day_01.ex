@@ -1,6 +1,6 @@
 defmodule DayOne do
-  @external_resource "priv/01/input.txt"
-  @input File.read! "priv/01/input.txt"
+  @external_resource "priv/01.txt"
+  @input File.read! "priv/01.txt"
 
   def solve do
     numbers = get_input()

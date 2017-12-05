@@ -1,6 +1,6 @@
 defmodule DayTwo do
-  @external_resource "priv/02/input.txt"
-  @input File.read! "priv/02/input.txt"
+  @external_resource "priv/02.txt"
+  @input File.read! "priv/02.txt"
   def file_input, do: parse_spreadsheet(@input)
 
   def solve do
