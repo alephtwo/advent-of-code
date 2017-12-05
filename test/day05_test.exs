@@ -5,4 +5,8 @@ defmodule DayFiveTest do
   test "part one dummy" do
     assert DayFive.steps_to_escape_part_one([0, 3, 0, 1, -3]) == 5
   end
+
+  test "part two dummy" do
+    assert DayFive.steps_to_escape_part_two([0, 3, 0, 1, -3]) == 10
+  end
 end
