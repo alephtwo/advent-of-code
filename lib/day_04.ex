@@ -22,6 +22,8 @@ defmodule DayFour do
 
   def contains_no_anagrams(passphrase) do
     tokens = split_passphrase(passphrase)
+    words = Enum.map(tokens, &alphabetize_word/1)
+    Enum.count(words |> Enum.uniq) == Enum.count(tokens)
   end
 
   def parse_file do
@@ -29,4 +31,10 @@ defmodule DayFour do
   end
 
   defp split_passphrase(p), do: String.split(p, " ", trim: true)
+  defp alphabetize_word(word) do
+    word
+    |> String.split("", trim: true)
+    |> Enum.sort
+    |> Enum.join("")
+  end
 end

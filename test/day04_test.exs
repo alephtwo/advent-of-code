@@ -37,4 +37,8 @@ defmodule DayFourTest do
   test "part two dummy invalid - ioioioio" do
     assert !DayFour.contains_no_anagrams("oiii ioii iioi iiio")
   end
+
+  test "part two actual" do
+    assert DayFour.part_two(DayFour.parse_file()) == 223
+  end
 end
