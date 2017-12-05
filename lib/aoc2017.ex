@@ -1,5 +1,5 @@
 defmodule AdventOfCode2017 do
   def main(_args) do
-    DayFour.solve()
+    DayFive.solve()
   end
 end
