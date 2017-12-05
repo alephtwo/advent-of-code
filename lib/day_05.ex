@@ -14,7 +14,17 @@ defmodule DayFive do
   end
 
   def steps_to_escape(input) do
-    
+    execute_and_jump({input, 0, 0})
+  end
+
+  def execute_and_jump({_, i, accum}) when i < 0, do: accum
+  def execute_and_jump({ops, i, accum}) when i >= length(ops), do: accum
+  def execute_and_jump({ops, i, accum}) do
+    jump = Enum.at(ops, i)
+    new_ops = List.replace_at(ops, i, jump + 1)
+    new_index = i + jump
+
+    execute_and_jump({new_ops, new_index, accum + 1})
   end
 
   def parse_file do
