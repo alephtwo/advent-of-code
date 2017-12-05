@@ -38,10 +38,10 @@ defmodule SpiralMemory2 do
   defp start_walking(map, prev, steps, number) do
     {new_map, current, value} =
       {map, prev, 1} |> walk(1, {1, 0}, number)
-                          |> walk(steps-1, {0, 1}, number)
-                          |> walk(steps, {-1, 0}, number)
-                          |> walk(steps, {0, -1}, number)
-                          |> walk(steps, {1, 0}, number)
+                     |> walk(steps - 1, {0, 1}, number)
+                     |> walk(steps, {-1, 0}, number)
+                     |> walk(steps, {0, -1}, number)
+                     |> walk(steps, {1, 0}, number)
 
     if value > number do
       value
@@ -67,9 +67,9 @@ defmodule SpiralMemory2 do
   end
 
   defp get_values(map, {x, y}) do
-    Map.get(map, {x-1, y}, 0) +
-    Map.get(map, {x-1, y + 1}, 0) +
-    Map.get(map, {x-1, y - 1}, 0) +
+    Map.get(map, {x - 1, y}, 0) +
+    Map.get(map, {x - 1, y + 1}, 0) +
+    Map.get(map, {x - 1, y - 1}, 0) +
     Map.get(map, {x, y - 1}, 0) +
     Map.get(map, {x, y + 1}, 0) +
     Map.get(map, {x + 1, y - 1}, 0) +
