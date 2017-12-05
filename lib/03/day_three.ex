@@ -67,17 +67,23 @@ defmodule SpiralMemory2 do
   end
 
   defp get_values(map, {x, y}) do
-    Map.get(map, {x-1, y}, 0)
-    + Map.get(map, {x-1, y + 1}, 0)
-    + Map.get(map, {x-1, y - 1}, 0)
-    + Map.get(map, {x, y - 1}, 0)
-    + Map.get(map, {x, y + 1}, 0)
-    + Map.get(map, {x + 1, y - 1}, 0)
-    + Map.get(map, {x + 1, y + 1}, 0)
-    + Map.get(map, {x + 1, y}, 0)
+    Map.get(map, {x-1, y}, 0) +
+    Map.get(map, {x-1, y + 1}, 0) +
+    Map.get(map, {x-1, y - 1}, 0) +
+    Map.get(map, {x, y - 1}, 0) +
+    Map.get(map, {x, y + 1}, 0) +
+    Map.get(map, {x + 1, y - 1}, 0) +
+    Map.get(map, {x + 1, y + 1}, 0) +
+    Map.get(map, {x + 1, y}, 0)
   end
 end
 
-input = 347_991
-IO.puts SpiralMemory.dist_to_core(input)
-IO.puts SpiralMemory2.solve(input)
+defmodule DayThree do
+  def test_input, do: 347_991
+  def solve do
+    IO.puts part_one(test_input())
+    IO.puts part_two(test_input())
+  end
+  def part_one(input), do: SpiralMemory.dist_to_core(input)
+  def part_two(input), do: SpiralMemory2.solve(input)
+end
