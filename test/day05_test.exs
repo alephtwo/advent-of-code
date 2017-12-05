@@ -3,10 +3,12 @@ defmodule DayFiveTest do
   doctest DayFive
 
   test "part one dummy" do
-    assert DayFive.steps_to_escape_part_one([0, 3, 0, 1, -3]) == 5
+    result = DayFive.steps_to_escape_part_one([0, 3, 0, 1, -3])
+    assert result == {5, [2, 5, 0, 1, -2]}
   end
 
   test "part two dummy" do
-    assert DayFive.steps_to_escape_part_two([0, 3, 0, 1, -3]) == 10
+    result = DayFive.steps_to_escape_part_two([0, 3, 0, 1, -3])
+    assert result == {10, [2, 3, 2, 3, -1]}
   end
 end
