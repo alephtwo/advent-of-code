@@ -3,7 +3,7 @@ defmodule DayFive do
   @input File.read! "priv/05.txt"
 
   def solve do
-    IO.puts part_two()
+    IO.puts "Pick something, this day is cursed and takes forever to run."
   end
 
   def part_one do
