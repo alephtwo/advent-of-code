@@ -4,6 +4,8 @@ defmodule DayFive do
   """
   @external_resource "priv/05.txt"
   @input File.read! "priv/05.txt"
+  @typep execution_bundle :: {list, number, number}
+  @typep execution_result :: {number, list}
 
   def solve do
     IO.puts "Pick something, this day is cursed and takes forever to run."
@@ -19,16 +21,19 @@ defmodule DayFive do
     accum
   end
 
+  @spec steps_to_escape_part_one(list) :: number
   def steps_to_escape_part_one(input) do
     execute_and_jump({input, 0, 0}, fn jump -> jump + 1 end)
   end
 
+  @spec steps_to_escape_part_two(list) :: number
   def steps_to_escape_part_two(input) do
     execute_and_jump({input, 0, 0}, fn jump ->
       if jump >= 3, do: jump - 1, else: jump + 1
     end)
   end
 
+  @spec execute_and_jump(execution_bundle, function) :: execution_result
   def execute_and_jump({ops, i, accum}, _) when i < 0 or i >= length(ops) do
     {accum, ops}
   end

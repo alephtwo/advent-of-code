@@ -10,19 +10,23 @@ defmodule DayFour do
     IO.puts part_two(parse_file())
   end
 
+  @spec part_one(list) :: number
   def part_one(input) do
     input |> Enum.filter(&contains_no_duplicate_words/1) |> Enum.count
   end
 
+  @spec part_two(list) :: number
   def part_two(input) do
     input |> Enum.filter(&contains_no_anagrams/1) |> Enum.count
   end
 
+  @spec contains_no_duplicate_words(list) :: boolean
   def contains_no_duplicate_words(passphrase) do
     tokens = split_passphrase(passphrase)
     Enum.count(tokens |> Enum.uniq) == Enum.count(tokens)
   end
 
+  @spec contains_no_anagrams(list) :: boolean
   def contains_no_anagrams(passphrase) do
     tokens = split_passphrase(passphrase)
     words = Enum.map(tokens, &alphabetize_word/1)

@@ -4,6 +4,7 @@ defmodule SpiralMemory do
   """
   require Integer
 
+  @spec dist_to_core(number) :: number
   def dist_to_core(1), do: 0
   def dist_to_core(n) do
     on_a_side = side_length(trunc(:math.sqrt(n)), n)
@@ -36,6 +37,7 @@ defmodule SpiralMemory2 do
   @moduledoc """
   Spiral memory for Advent of Code 2017 Day 3 part 2.
   """
+  @spec solve(number) :: number
   def solve(n) do
     start_walking(%{{0, 0} => 1}, {0, 0}, 2, n)
   end
@@ -92,6 +94,10 @@ defmodule DayThree do
     IO.puts part_one(test_input())
     IO.puts part_two(test_input())
   end
+
+  @spec part_one(list) :: number
   def part_one(input), do: SpiralMemory.dist_to_core(input)
+
+  @spec part_two(list) :: number
   def part_two(input), do: SpiralMemory2.solve(input)
 end

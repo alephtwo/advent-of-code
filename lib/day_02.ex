@@ -11,12 +11,14 @@ defmodule DayTwo do
     IO.puts DayTwo.part_two(file_input())
   end
 
+  @spec part_one(list) :: number
   def part_one(input) do
     input
     |> Enum.map(fn row -> Enum.max(row) - Enum.min(row) end)
     |> Enum.sum
   end
 
+  @spec part_two(list) :: number
   def part_two(input) do
     input
     |> Enum.map(&Enum.sort/1)
@@ -26,7 +28,7 @@ defmodule DayTwo do
     |> Enum.sum
   end
 
-  def parse_spreadsheet(input) do
+  defp parse_spreadsheet(input) do
     input
     |> String.split("\n", trim: true)
     |> Enum.map(&split_and_parse/1)

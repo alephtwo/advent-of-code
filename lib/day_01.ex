@@ -11,11 +11,13 @@ defmodule DayOne do
     IO.puts part_two(numbers)
   end
 
+  @spec part_one(list) :: number
   def part_one(numbers) do
     matches_next = fn n -> (Enum.at(numbers, n) == Enum.at(numbers, n + 1)) end
     captcha(numbers, matches_next)
   end
 
+  @spec part_two(list) :: number
   def part_two(numbers) do
     halfway_around = div(Enum.count(numbers), 2)
     matches_halfway_around = fn n ->
