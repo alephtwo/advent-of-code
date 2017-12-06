@@ -4,17 +4,19 @@ defmodule DaySix do
 
   def part_one, do: steps_to_detect_infinite_loop(test_data())
 
-  def steps_to_detect_infinite_loop(banks), do: step(banks, MapSet.new([banks]))
+  def steps_to_detect_infinite_loop(banks), do: step(banks, MapSet.new())
 
   def step(banks, seen, steps_taken \\ 1) do
-    next_bank = choose_next_bank(banks)
-    updated_banks = spread_across_banks(banks, next_bank)
-
+    updated_banks = update_banks(banks)
     if  Enum.any?(seen, fn x -> x == updated_banks end) do
       steps_taken
     else
       step(updated_banks, MapSet.put(seen, updated_banks), steps_taken + 1)
     end
+  end
+
+  def update_banks(banks) do
+    spread_across_banks(banks, choose_next_bank(banks))
   end
 
   def choose_next_bank(banks) do
@@ -25,7 +27,7 @@ defmodule DaySix do
     |> Enum.min(fn {_, i} -> i end)
   end
 
-  def spread_across_banks(banks, {bank_value, bank_index}) do
+  defp spread_across_banks(banks, {bank_value, bank_index}) do
     banks_after_removal = List.replace_at(banks, bank_index, 0)
     bank_count = Enum.count(banks)
     chunk_size = round(:math.ceil(bank_value / bank_count))
