@@ -23,10 +23,14 @@ defmodule DaySixTest do
   end
 
   test "part one dummy" do
-    assert DaySix.steps_to_detect_infinite_loop([0, 2, 7, 0]) == 5
+    assert DaySix.get_steps(DaySix.detect_infinite_loop([0, 2, 7, 0])) == 5
   end
 
   test "part one actual" do
     assert DaySix.part_one == 5042
+  end
+
+  test "part two dummy" do
+    assert DaySix.get_size(DaySix.detect_infinite_loop([0, 2, 7, 0])) == 4
   end
 end

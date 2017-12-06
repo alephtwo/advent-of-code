@@ -2,16 +2,23 @@ defmodule DaySix do
   @external_resource "priv/06.txt"
   @input File.read! "priv/06.txt"
 
-  def part_one, do: steps_to_detect_infinite_loop(test_data())
+  def part_one, do: get_steps(detect_infinite_loop(test_data()))
+  def part_two, do: get_size(detect_infinite_loop(test_data()))
 
-  def steps_to_detect_infinite_loop(banks), do: step(banks, MapSet.new())
+  def get_steps({steps, _}), do: steps
+  def get_size({_, size}), do: size
+  def detect_infinite_loop(banks), do: step(banks)
 
-  def step(banks, seen, steps_taken \\ 1) do
+  def step(banks, seen \\ [], steps_taken \\ 1) do
     updated_banks = update_banks(banks)
-    if  Enum.any?(seen, fn x -> x == updated_banks end) do
-      steps_taken
+    if Enum.any?(seen, fn x -> x == updated_banks end) do
+      {_, prev_step} = seen
+                       |> Enum.with_index
+                       |> Enum.filter(fn {x, _} -> x == updated_banks end)
+                       |> List.first
+      {steps_taken, steps_taken - prev_step - 1}
     else
-      step(updated_banks, MapSet.put(seen, updated_banks), steps_taken + 1)
+      step(updated_banks, Enum.concat(seen, [updated_banks]), steps_taken + 1)
     end
   end
 
