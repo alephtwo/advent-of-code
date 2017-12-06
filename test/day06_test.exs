@@ -2,6 +2,19 @@ defmodule DaySixTest do
   use ExUnit.Case
   doctest DaySix
 
+  test "part one choose next" do
+    assert DaySix.choose_next_bank([0, 2, 7, 0]) == {7, 2}
+  end
+
+  test "part one rotate left" do
+    assert DaySix.rotate_left([0, 1, 2], -1) == [2, 0, 1]
+    assert DaySix.rotate_left([0, 1, 2], 0) == [0, 1, 2]
+    assert DaySix.rotate_left([0, 1, 2], 1) == [1, 2, 0]
+    assert DaySix.rotate_left([0, 1, 2], 2) == [2, 0, 1]
+    assert DaySix.rotate_left([0, 1, 2], 3) == [0, 1, 2]
+    assert DaySix.rotate_left([0, 1, 2], 4) == [1, 2, 0]
+  end
+
   test "part one dummy" do
     assert DaySix.steps_to_detect_infinite_loop([0, 2, 7, 0]) == 5
   end
