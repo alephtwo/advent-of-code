@@ -6,7 +6,7 @@ defmodule DaySix do
 
   def steps_to_detect_infinite_loop(banks), do: step(banks, MapSet.new([banks]))
 
-  def step(banks, seen, steps_taken \\ 0) do
+  def step(banks, seen, steps_taken \\ 1) do
     next_bank = choose_next_bank(banks)
     updated_banks = spread_across_banks(banks, next_bank)
 
@@ -34,7 +34,12 @@ defmodule DaySix do
              |> Enum.map(&Enum.sum/1)
              |> rotate_left((bank_count - bank_index - 1))
 
-    [banks_after_removal, spread]
+    spreads_needed = bank_count - Enum.count(spread)
+    fixed_spread =
+      spread
+      |> Enum.concat(List.duplicate(0, Enum.max([spreads_needed, 0])))
+
+    [banks_after_removal, fixed_spread]
     |> List.zip
     |> Enum.map(fn {a, b} -> a + b end)
   end
