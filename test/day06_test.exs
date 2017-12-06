@@ -33,4 +33,8 @@ defmodule DaySixTest do
   test "part two dummy" do
     assert DaySix.get_size(DaySix.detect_infinite_loop([0, 2, 7, 0])) == 4
   end
+
+  test "part two actual" do
+    assert DaySix.part_two == 1086
+  end
 end
