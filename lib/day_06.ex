@@ -50,6 +50,10 @@ defmodule DaySix do
     |> rotate_left(offset - 1)
   end
 
-
-  defp test_data, do: @input |> String.trim |> String.split("\t", trim: true)
+  defp test_data do
+    @input
+    |> String.trim
+    |> String.split("\t", trim: true)
+    |> Enum.map(&String.to_integer/1)
+  end
 end
