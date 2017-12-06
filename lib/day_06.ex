@@ -1,4 +1,7 @@
 defmodule DaySix do
+  @moduledoc """
+  Advent of Code 2017 Day 6 solutions.
+  """
   @external_resource "priv/06.txt"
   @input File.read! "priv/06.txt"
 
@@ -39,7 +42,8 @@ defmodule DaySix do
     bank_count = Enum.count(banks)
     chunk_size = round(:math.ceil(bank_value / bank_count))
 
-    spread = List.duplicate(1, bank_value)
+    spread = 1
+             |> List.duplicate(bank_value)
              |> Enum.chunk_every(chunk_size)
              |> Enum.map(&Enum.sum/1)
 

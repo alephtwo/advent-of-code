@@ -1,5 +1,7 @@
-# Need to make the ulam spiral.
 defmodule SpiralMemory do
+  @moduledoc """
+  Spiral memory for Advent of Code 2017 Day 3.
+  """
   require Integer
 
   def dist_to_core(1), do: 0
@@ -31,6 +33,9 @@ defmodule SpiralMemory do
 end
 
 defmodule SpiralMemory2 do
+  @moduledoc """
+  Spiral memory for Advent of Code 2017 Day 3 part 2.
+  """
   def solve(n) do
     start_walking(%{{0, 0} => 1}, {0, 0}, 2, n)
   end
@@ -79,6 +84,9 @@ defmodule SpiralMemory2 do
 end
 
 defmodule DayThree do
+  @moduledoc """
+  Advent of Code 2017 Day 3 solutions.
+  """
   def test_input, do: 347_991
   def solve do
     IO.puts part_one(test_input())

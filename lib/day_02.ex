@@ -1,4 +1,7 @@
 defmodule DayTwo do
+  @moduledoc """
+  Advent of Code 2017 Day 2 solutions.
+  """
   @external_resource "priv/02.txt"
   @input File.read! "priv/02.txt"
   def file_input, do: parse_spreadsheet(@input)

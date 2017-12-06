@@ -1,4 +1,7 @@
 defmodule DayFive do
+  @moduledoc """
+  Advent of Code 2017 Day 5 solutions.
+  """
   @external_resource "priv/05.txt"
   @input File.read! "priv/05.txt"
 
