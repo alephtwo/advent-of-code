@@ -25,4 +25,8 @@ defmodule DaySixTest do
   test "part one dummy" do
     assert DaySix.steps_to_detect_infinite_loop([0, 2, 7, 0]) == 5
   end
+
+  test "part one actual" do
+    assert DaySix.part_one == 5042
+  end
 end
