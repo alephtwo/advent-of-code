@@ -31,17 +31,18 @@ defmodule DaySix do
     banks_after_removal = List.replace_at(banks, bank_index, 0)
     bank_count = Enum.count(banks)
     chunk_size = round(:math.ceil(bank_value / bank_count))
+
     spread = List.duplicate(1, bank_value)
              |> Enum.chunk_every(chunk_size)
              |> Enum.map(&Enum.sum/1)
-             |> rotate_left((bank_count - bank_index - 1))
 
     spreads_needed = bank_count - Enum.count(spread)
     fixed_spread =
       spread
       |> Enum.concat(List.duplicate(0, Enum.max([spreads_needed, 0])))
 
-    [banks_after_removal, fixed_spread]
+    rotation = bank_count - bank_index - 1
+    [banks_after_removal, fixed_spread |> rotate_left(rotation)]
     |> List.zip
     |> Enum.map(fn {a, b} -> a + b end)
   end
