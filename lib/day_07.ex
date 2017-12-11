@@ -6,11 +6,12 @@ defmodule DaySeven do
   @input File.read! "priv/07.txt"
 
   def part_one do
-    get_input() |> find_root |> IO.puts
+    get_input() |> build_graph |> find_root |> IO.puts
   end
 
   def part_two do
-    get_input() |> find_unbalanced |> IO.puts
+    disc_weights = to_weights(get_input())
+    # get_input() |> find_unbalanced |> IO.puts
   end
 
   @spec find_root(any) :: String.t
@@ -35,7 +36,6 @@ defmodule DaySeven do
     @input
     |> String.split("\n", trim: true)
     |> Enum.map(&parse_str/1)
-    |> build_graph
   end
 
   defp build_graph(input) do
@@ -60,4 +60,10 @@ defmodule DaySeven do
 
   defp parse_children(nil), do: []
   defp parse_children(s), do: String.split(s, ", ", trim: true)
+
+  def to_weights(input) do
+    input
+    |> Enum.map(fn x -> {Map.get(x, :name), Map.get(x, :weight)} end)
+    |> Enum.into(%{})
+  end
 end
