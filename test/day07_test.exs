@@ -20,4 +20,8 @@ defmodule DaySevenTest do
       children: ["ktlj", "cntj", "xhth"]
     }
   end
+
+  test "part one" do
+    DaySeven.part_one
+  end
 end
