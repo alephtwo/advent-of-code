@@ -3,17 +3,17 @@ defmodule DaySevenTest do
   doctest DaySeven
 
   test "parse string, no children" do
-    parsed = DaySeven.parse_string("pbga (66)")
+    parsed = DaySeven.parse_str("pbga (66)")
     assert parsed == %{weight: 66, name: "pbga", children: []}
   end
 
   test "parse string, one child" do
-    parsed = DaySeven.parse_string("fwft (72) -> ktlj")
+    parsed = DaySeven.parse_str("fwft (72) -> ktlj")
     assert parsed == %{ weight: 72, name: "fwft", children: ["ktlj"] }
   end
 
   test "parse string, multiple children" do
-    parsed = DaySeven.parse_string("fwft (72) -> ktlj, cntj, xhth")
+    parsed = DaySeven.parse_str("fwft (72) -> ktlj, cntj, xhth")
     assert parsed == %{
       weight: 72,
       name: "fwft",
@@ -22,6 +22,6 @@ defmodule DaySevenTest do
   end
 
   test "part one" do
-    assert DaySeven.find_root(DaySeven.get_input()) == ["hlhomy"]
+    assert DaySeven.find_root(DaySeven.get_input()) == "hlhomy"
   end
 end

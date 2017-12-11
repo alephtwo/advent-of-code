@@ -6,16 +6,19 @@ defmodule DaySeven do
   @input File.read! "priv/07.txt"
 
   def part_one do
-    get_input()
-    |> find_root
-    |> IO.puts
+    get_input() |> find_root |> IO.puts
   end
 
-  @spec find_root(digraph) :: list(string)
+  def part_two do
+    get_input() |> find_unbalanced |> IO.puts
+  end
+
+  @spec find_root(any) :: String.t
   def find_root(graph) do
     graph
     |> :digraph.vertices
     |> Enum.filter(fn v -> :digraph.in_degree(graph, v) == 0 end)
+    |> List.first
   end
 
   defp add_vertex(graph, %{name: name}), do: :digraph.add_vertex(graph, name)
@@ -23,10 +26,15 @@ defmodule DaySeven do
     Enum.each(children, fn child -> :digraph.add_edge(graph, name, child) end)
   end
 
+  @spec find_unbalanced(any) :: list({String.t, number})
+  def find_unbalanced(graph) do
+    root = find_root(graph)
+  end
+
   def get_input do
     @input
     |> String.split("\n", trim: true)
-    |> Enum.map(&parse_string/1)
+    |> Enum.map(&parse_str/1)
     |> build_graph
   end
 
@@ -37,8 +45,8 @@ defmodule DaySeven do
     graph
   end
 
-  @spec parse_string(string) :: %{weight: number, name: string, children: list}
-  def parse_string(string) do
+  @spec parse_str(String.t) :: %{weight: number, name: String.t, children: list}
+  def parse_str(string) do
     tokens = String.split(string, "-> ", trim: true)
 
     disc = parse_name_and_weight(Enum.at(tokens, 0))
