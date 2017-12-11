@@ -22,7 +22,8 @@ defmodule DaySevenTest do
   end
 
   test "part one" do
-    assert DaySeven.find_root(DaySeven.get_input()) == "hlhomy"
+    root = DaySeven.find_root(DaySeven.build_graph(DaySeven.get_input()))
+    assert root == "hlhomy"
   end
 
   test "part two" do

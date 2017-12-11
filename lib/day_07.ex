@@ -38,7 +38,8 @@ defmodule DaySeven do
     |> Enum.map(&parse_str/1)
   end
 
-  defp build_graph(input) do
+  @spec build_graph(map) :: any
+  def build_graph(input) do
     graph = :digraph.new()
     Enum.each(input, fn x -> add_vertex(graph, x) end)
     Enum.each(input, fn x -> add_edges(graph, x) end)
