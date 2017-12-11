@@ -1,15 +1,21 @@
 defmodule DaySeven do
+  @moduledoc """
+  Day Seven of AOC2017.
+  """
   @external_resource "priv/07.txt"
   @input File.read! "priv/07.txt"
 
-  def part_one, do: solve(get_input())
+  def part_one do
+    get_input()
+    |> find_root
+    |> IO.puts
+  end
 
-  def solve(input) do
-    graph = :digraph.new()
-    Enum.each(input, fn x -> add_vertex(graph, x) end)
-    Enum.each(input, fn x -> add_edges(graph, x) end)
-
-    IO.inspect :digraph.edges(graph)
+  @spec find_root(digraph) :: list(string)
+  def find_root(graph) do
+    graph
+    |> :digraph.vertices
+    |> Enum.filter(fn v -> :digraph.in_degree(graph, v) == 0 end)
   end
 
   defp add_vertex(graph, %{name: name}), do: :digraph.add_vertex(graph, name)
@@ -21,8 +27,17 @@ defmodule DaySeven do
     @input
     |> String.split("\n", trim: true)
     |> Enum.map(&parse_string/1)
+    |> build_graph
   end
 
+  defp build_graph(input) do
+    graph = :digraph.new()
+    Enum.each(input, fn x -> add_vertex(graph, x) end)
+    Enum.each(input, fn x -> add_edges(graph, x) end)
+    graph
+  end
+
+  @spec parse_string(string) :: %{weight: number, name: string, children: list}
   def parse_string(string) do
     tokens = String.split(string, "-> ", trim: true)
 
@@ -32,7 +47,7 @@ defmodule DaySeven do
 
   defp parse_name_and_weight(string) do
     [[_, name, weight]] = Regex.scan(~r/^(.*)? \((\d+)\)/, string)
-    %{ name: name, weight: String.to_integer(weight) }
+    %{name: name, weight: String.to_integer(weight)}
   end
 
   defp parse_children(nil), do: []

@@ -22,6 +22,6 @@ defmodule DaySevenTest do
   end
 
   test "part one" do
-    DaySeven.part_one
+    assert DaySeven.find_root(DaySeven.get_input()) == ["hlhomy"]
   end
 end
