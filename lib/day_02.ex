@@ -11,9 +11,26 @@ defmodule Day02 do
   end
 
   def part_one(input) when is_list(input) do
+    input
+    |> Enum.map(&char_counts/1)
+    |> Enum.map(fn c -> [Map.has_key?(c, 2), Map.has_key?(c, 3)] end)
+    |> Enum.reduce([0, 0], fn [has_two, has_three], [twos, threes] ->
+      [
+        if(has_two, do: twos + 1, else: twos),
+        if(has_three, do: threes + 1, else: threes)
+      ]
+    end)
+    |> Enum.reduce(&Kernel.*/2)
   end
 
   def part_two(input) when is_list(input) do
+  end
+
+  def char_counts(id) do
+    characters = String.split(id, "", trim: true)
+
+    characters
+    |> Enum.group_by(fn x -> Enum.count(characters, fn y -> y == x end) end)
   end
 
   def parse_input do

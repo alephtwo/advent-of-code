@@ -19,4 +19,8 @@ defmodule Day02Test do
 
     assert checksum == 12
   end
+
+  test "part one: solution" do
+    assert Day02.part_one(Day02.parse_input()) == 7105
+  end
 end
