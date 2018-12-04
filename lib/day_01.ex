@@ -1,4 +1,4 @@
-defmodule DayOne do
+defmodule Day01 do
   @moduledoc """
   Day One of Advent of Code 2018.
   """
