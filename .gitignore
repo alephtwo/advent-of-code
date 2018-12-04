@@ -1,0 +1,12 @@
+# Default Mix Ignores
+/_build/
+/cover/
+/deps/
+/doc/
+/.fetch
+erl_crash.dump
+*.ez
+advent_of_code-*.tar
+
+# escript "binary"
+/advent_of_code
