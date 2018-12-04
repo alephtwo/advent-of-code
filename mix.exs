@@ -7,8 +7,8 @@ defmodule AdventOfCode.MixProject do
       version: "0.1.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
-      deps: deps(),
-      escript: [main_module: AdventOfCode.CLI]
+      aliases: aliases(),
+      deps: deps()
     ]
   end
 
@@ -19,6 +19,14 @@ defmodule AdventOfCode.MixProject do
   end
 
   defp deps do
-    []
+    [
+      {:credo, "1.0.0", only: [:dev, :test], runtime: false}
+    ]
+  end
+
+  defp aliases do
+    [
+      lint: ["credo --strict", "format"]
+    ]
   end
 end
