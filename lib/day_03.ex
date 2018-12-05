@@ -9,6 +9,7 @@ defmodule Day03 do
 
   def part_one(input) do
     input
+    |> Enum.map(&parse_claim/1)
     |> build_patchwork()
     |> Enum.map(&detect_overlaps_in_row/1)
     |> Enum.reduce(0, &Kernel.+/2)
@@ -16,13 +17,29 @@ defmodule Day03 do
 
   def part_two, do: part_two(parse_input())
 
-  def part_two(_input) do
+  def part_two(input) do
+    claims = Enum.map(input, &parse_claim/1)
+
+    sections_with_overlaps =
+      claims
+      |> build_patchwork()
+      |> Enum.map(&Enum.uniq/1)
+      |> Enum.flat_map(fn row -> Enum.filter(row, &Enum.any?/1) end)
+      |> Enum.uniq()
+      |> Enum.sort()
+      # Find sections that have more than one row overlapping
+      |> Enum.filter(fn x -> Enum.count(x) > 1 end)
+      |> List.flatten()
+      |> Enum.uniq()
+
+    claims
+    |> Enum.filter(fn x -> !Enum.member?(sections_with_overlaps, x.id) end)
+    |> Enum.at(0)
   end
 
   defp parse_input, do: String.split(@input, "\n", trim: true)
 
-  defp build_patchwork(input) do
-    claims = Enum.map(input, &parse_claim/1)
+  defp build_patchwork(claims) do
     surface_area = matrix(required_height(claims), required_width(claims))
     Enum.reduce(claims, surface_area, &populate_surface_area/2)
   end
