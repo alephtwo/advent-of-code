@@ -33,4 +33,14 @@ defmodule Day03Test do
   # test "part one: solution" do
   #   assert Day03.part_one() == 110_827
   # end
+
+  test "part two: example" do
+    lonely_patch = Day03.part_two([
+      "#1 @ 1,3: 4x4",
+      "#2 @ 3,1: 4x4",
+      "#3 @ 5,5: 2x2"
+    ])
+
+    assert lonely_patch.id == 3
+  end
 end

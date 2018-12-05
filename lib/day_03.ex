@@ -8,11 +8,8 @@ defmodule Day03 do
   def part_one, do: part_one(parse_input())
 
   def part_one(input) do
-    claims = Enum.map(input, &parse_claim/1)
-    surface_area = matrix(required_height(claims), required_width(claims))
-    patchwork = Enum.reduce(claims, surface_area, &populate_surface_area/2)
-
-    patchwork
+    input
+    |> build_patchwork()
     |> Enum.map(&detect_overlaps_in_row/1)
     |> Enum.reduce(0, &Kernel.+/2)
   end
@@ -23,6 +20,12 @@ defmodule Day03 do
   end
 
   defp parse_input, do: String.split(@input, "\n", trim: true)
+
+  defp build_patchwork(input) do
+    claims = Enum.map(input, &parse_claim/1)
+    surface_area = matrix(required_height(claims), required_width(claims))
+    Enum.reduce(claims, surface_area, &populate_surface_area/2)
+  end
 
   defp parse_claim(claim) do
     groups =
