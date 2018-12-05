@@ -27,7 +27,7 @@ defmodule Day03 do
   defp parse_claim(claim) do
     groups =
       Regex.named_captures(
-        ~r/#(?<id>\d+) @ (?<left>\d+),(?<top>\d+): (?<height>\d+)x(?<width>\d+)/,
+        ~r/#(?<id>\d+) @ (?<left>\d+),(?<top>\d+): (?<width>\d+)x(?<height>\d+)/,
         claim
       )
 
