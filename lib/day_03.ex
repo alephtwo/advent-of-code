@@ -10,6 +10,7 @@ defmodule Day03 do
   def part_one(input) do
     claims = Enum.map(input, &parse_claim/1)
     surface_area = matrix(required_height(claims), required_width(claims))
+    Enum.reduce(claims, surface_area, &populate_surface_area/2)
   end
 
   def part_two, do: part_two(parse_input())
@@ -46,5 +47,9 @@ defmodule Day03 do
     claims
     |> Enum.map(fn claim -> claim.top + claim.height + 1 end)
     |> Enum.max()
+  end
+
+  defp populate_surface_area(claim, surface_area) do
+    surface_area
   end
 end
