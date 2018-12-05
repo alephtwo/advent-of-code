@@ -38,7 +38,7 @@ defmodule Day03 do
     |> Map.new(fn {k, v} -> {String.to_atom(k), String.to_integer(v)} end)
   end
 
-  defp matrix(rows, columns, default_value \\ 0) do
+  defp matrix(rows, columns, default_value \\ []) do
     1
     |> List.duplicate(rows)
     |> Enum.map(fn _ -> List.duplicate(default_value, columns) end)
@@ -65,7 +65,10 @@ defmodule Day03 do
       else
         Enum.map(Enum.with_index(row), fn {col, x} ->
           right = claim.left + claim.width
-          if x < claim.left || x >= right, do: col, else: col + 1
+
+          if x < claim.left || x >= right,
+            do: col,
+            else: Enum.reverse([claim.id | col])
         end)
       end
     end)
@@ -73,7 +76,7 @@ defmodule Day03 do
 
   defp detect_overlaps_in_row(row) do
     row
-    |> Enum.map(fn x -> if x > 1, do: 1, else: 0 end)
+    |> Enum.map(fn x -> if Enum.count(x) > 1, do: 1, else: 0 end)
     |> Enum.sum()
   end
 end
