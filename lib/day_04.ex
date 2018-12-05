@@ -9,8 +9,7 @@ defmodule Day04 do
 
   def part_one(input) do
     input
-    |> Enum.map(&parse_line/1)
-    |> IO.puts()
+    |> parse_input()
   end
 
   def part_two, do: part_two(@input)
@@ -18,11 +17,17 @@ defmodule Day04 do
   def part_two(_input) do
   end
 
+  defp parse_input(input) do
+    input
+    |> Enum.map(&parse_line/1)
+    |> Enum.sort_by(fn x -> x.timestamp end)
+  end
+
   defp parse_line(line) do
     parsed = Regex.named_captures(~r/^\[(?<time>.*?)\] (?<action>.*?)$/, line)
 
     fake_iso_date = parsed["time"] <> ":00Z"
-    {:ok, timestamp} = DateTime.from_iso8601(fake_iso_date)
+    {:ok, timestamp, _} = DateTime.from_iso8601(fake_iso_date)
 
     %{action: parsed["action"], timestamp: timestamp}
   end
