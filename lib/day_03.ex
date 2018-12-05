@@ -49,7 +49,17 @@ defmodule Day03 do
     |> Enum.max()
   end
 
-  defp populate_surface_area(claim, surface_area) do
-    surface_area
+  defp populate_surface_area(claim, rows) do
+    Enum.map(Enum.with_index(rows), fn {row, y} ->
+      bottom = claim.top + claim.height
+      if y < claim.top || y >= bottom do
+        row
+      else
+        Enum.map(Enum.with_index(row), fn {col, x} ->
+          right = claim.left + claim.width
+          if x < claim.left || x >= right, do: col, else: col + 1
+        end)
+      end
+    end)
   end
 end
