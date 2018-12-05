@@ -24,16 +24,51 @@ defmodule Day02 do
   end
 
   def part_two(input) when is_list(input) do
+    {_, closest} =
+      input
+      |> Enum.flat_map(fn x -> Enum.map(input, fn y -> [x, y] end) end)
+      |> Enum.filter(fn [l, r] -> l != r end)
+      |> Enum.group_by(fn [l, r] -> simple_word_distance(l, r) end)
+      |> Enum.filter(fn {c, _} -> c == 1 end)
+      |> Enum.at(0)
+
+    [first, second] =
+      closest
+      |> Enum.at(0)
+      |> Enum.map(&String.split(&1, "", trim: true))
+
+    first
+    |> Enum.zip(second)
+    |> Enum.filter(fn {x, y} -> x == y end)
+    |> Enum.map(fn {x, _} -> x end)
+    |> Enum.join("")
   end
 
-  def char_counts(id) do
+  # This sure got needlessly complicated...
+  def simple_word_distance(first, second) do
+    mask =
+      first
+      |> string_to_binary
+      |> Enum.zip(string_to_binary(second))
+      |> Enum.map(fn {x, y} -> abs(x - y) end)
+      |> drop_last
+
+    Enum.count(mask, fn x -> x != 0 end)
+  end
+
+  def parse_input, do: String.split(@input, "\n", trim: true)
+
+  defp char_counts(id) do
     characters = String.split(id, "", trim: true)
 
     characters
     |> Enum.group_by(fn x -> Enum.count(characters, fn y -> y == x end) end)
   end
 
-  def parse_input do
-    String.split(@input, "\n", trim: true)
+  defp string_to_binary(word), do: :binary.bin_to_list(word <> <<0>>)
+
+  defp drop_last(list) do
+    [_ | tail] = Enum.reverse(list)
+    Enum.reverse(tail)
   end
 end

@@ -38,4 +38,8 @@ defmodule Day02Test do
 
     assert value == "fgij"
   end
+
+  test "part two: solution" do
+    assert Day02.part_two(Day02.parse_input()) == "omlvgdokxfncvqyersasjziup"
+  end
 end
