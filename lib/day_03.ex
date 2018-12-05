@@ -9,6 +9,7 @@ defmodule Day03 do
 
   def part_one(input) do
     claims = Enum.map(input, &parse_claim/1)
+    surface_area = matrix(required_height(claims), required_width(claims))
   end
 
   def part_two, do: part_two(parse_input())
@@ -19,9 +20,31 @@ defmodule Day03 do
   defp parse_input, do: String.split(@input, "\n", trim: true)
 
   defp parse_claim(claim) do
-    Regex.named_captures(
-      ~r/#(?<id>\d+) @ (?<left>\d+),(?<top>\d+): (?<height>\d+)x(?<width>\d+)/,
-      claim
-    )
+    groups =
+      Regex.named_captures(
+        ~r/#(?<id>\d+) @ (?<left>\d+),(?<top>\d+): (?<height>\d+)x(?<width>\d+)/,
+        claim
+      )
+
+    groups
+    |> Map.new(fn {k, v} -> {String.to_atom(k), String.to_integer(v)} end)
+  end
+
+  defp matrix(rows, columns, default_value \\ 0) do
+    1
+    |> List.duplicate(rows)
+    |> Enum.map(fn _ -> List.duplicate(default_value, columns) end)
+  end
+
+  defp required_width(claims) do
+    claims
+    |> Enum.map(fn claim -> claim.left + claim.width + 1 end)
+    |> Enum.max()
+  end
+
+  defp required_height(claims) do
+    claims
+    |> Enum.map(fn claim -> claim.top + claim.height + 1 end)
+    |> Enum.max()
   end
 end
