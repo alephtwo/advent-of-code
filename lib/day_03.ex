@@ -10,7 +10,11 @@ defmodule Day03 do
   def part_one(input) do
     claims = Enum.map(input, &parse_claim/1)
     surface_area = matrix(required_height(claims), required_width(claims))
-    Enum.reduce(claims, surface_area, &populate_surface_area/2)
+    patchwork = Enum.reduce(claims, surface_area, &populate_surface_area/2)
+
+    patchwork
+    |> Enum.map(&detect_overlaps_in_row/1)
+    |> Enum.reduce(0, &Kernel.+/2)
   end
 
   def part_two, do: part_two(parse_input())
@@ -52,6 +56,7 @@ defmodule Day03 do
   defp populate_surface_area(claim, rows) do
     Enum.map(Enum.with_index(rows), fn {row, y} ->
       bottom = claim.top + claim.height
+
       if y < claim.top || y >= bottom do
         row
       else
@@ -61,5 +66,11 @@ defmodule Day03 do
         end)
       end
     end)
+  end
+
+  defp detect_overlaps_in_row(row) do
+    row
+    |> Enum.map(fn x -> if x > 1, do: 1, else: 0 end)
+    |> Enum.sum()
   end
 end
