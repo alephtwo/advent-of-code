@@ -29,10 +29,10 @@ defmodule Day03Test do
     assert Day03.part_one(["#1 @ 2,2: 5x5", "#2 @ 2,6: 5x5"]) == 5
   end
 
-  # This test takes a while.
-  # test "part one: solution" do
-  #   assert Day03.part_one() == 110_827
-  # end
+  @tag :time_consuming
+  test "part one: solution" do
+    assert Day03.part_one() == 110_827
+  end
 
   test "part two: example" do
     lonely_patch =
@@ -42,6 +42,11 @@ defmodule Day03Test do
         "#3 @ 5,5: 2x2"
       ])
 
-    assert lonely_patch.id == 3
+    assert lonely_patch == 3
+  end
+
+  @tag :time_consuming
+  test "part two: solution" do
+    assert Day03.part_two() === 116
   end
 end

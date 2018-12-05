@@ -37,8 +37,8 @@ defmodule Day01Test do
     assert Day01.part_two([+7, +7, -2, -7, -4]) == 14
   end
 
-  # This test is really quite slow...
-  # test "part two: solution" do
-  #   assert Day01.part_two(Day01.parse_input()) == 481
-  # end
+  @tag :time_consuming
+  test "part two: solution" do
+    assert Day01.part_two(Day01.parse_input()) == 481
+  end
 end

@@ -33,7 +33,8 @@ defmodule Day03 do
       |> Enum.uniq()
 
     claims
-    |> Enum.filter(fn x -> !Enum.member?(sections_with_overlaps, x.id) end)
+    |> Enum.map(fn x -> x.id end)
+    |> Enum.filter(fn x -> !Enum.member?(sections_with_overlaps, x) end)
     |> Enum.at(0)
   end
 
