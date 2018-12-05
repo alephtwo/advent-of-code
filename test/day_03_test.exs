@@ -28,4 +28,9 @@ defmodule Day03Test do
   test "part one: small row" do
     assert Day03.part_one(["#1 @ 2,2: 5x5", "#2 @ 2,6: 5x5"]) == 5
   end
+
+  # This test takes a while.
+  # test "part one: solution" do
+  #   assert Day03.part_one() == 110_827
+  # end
 end
