@@ -29,6 +29,20 @@ defmodule Day04 do
     fake_iso_date = parsed["time"] <> ":00Z"
     {:ok, timestamp, _} = DateTime.from_iso8601(fake_iso_date)
 
-    %{action: parsed["action"], timestamp: timestamp}
+    {id, action} = parse_action(parsed["action"])
+    %{id: id, action: action, timestamp: timestamp}
+  end
+
+  defp parse_action(action) do
+    cond do
+      action =~ "Guard" -> parse_guard_id(action)
+      action == "falls asleep" -> {nil, :sleep}
+      action == "wakes up" -> {nil, :wake}
+    end
+  end
+
+  defp parse_guard_id(action) do
+    captures = Regex.named_captures(~r/^Guard #(?<id>\d+)/, action)
+    {String.to_integer(captures["id"]), :start}
   end
 end
