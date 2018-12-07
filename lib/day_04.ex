@@ -21,6 +21,8 @@ defmodule Day04 do
     input
     |> Enum.map(&parse_line/1)
     |> Enum.sort_by(fn x -> x.timestamp end)
+    |> Enum.reduce([], &propagate_ids/2)
+    |> Enum.reverse()
   end
 
   defp parse_line(line) do
@@ -44,5 +46,10 @@ defmodule Day04 do
   defp parse_guard_id(action) do
     captures = Regex.named_captures(~r/^Guard #(?<id>\d+)/, action)
     {String.to_integer(captures["id"]), :start}
+  end
+
+  defp propagate_ids(entry, entries) do
+    id = if entry.id == nil, do: List.first(entries).id, else: entry.id
+    [Map.put(entry, :id, id) | entries]
   end
 end
