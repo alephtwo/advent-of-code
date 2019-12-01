@@ -10,4 +10,20 @@ defmodule Day01 do
   end
 
   def calculate_fuel_from_mass(mass), do: div(mass, 3) - 2
+
+  def part_two do
+    @input
+    |> Enum.map(&calculate_fuel_recursively(&1))
+    |> Enum.sum()
+  end
+
+  def calculate_fuel_recursively(mass) do
+    fuel = calculate_fuel_from_mass(mass)
+
+    if fuel > 0 do
+      fuel + calculate_fuel_recursively(fuel)
+    else
+      0
+    end
+  end
 end

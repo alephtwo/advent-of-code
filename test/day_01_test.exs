@@ -21,4 +21,16 @@ defmodule Day01Test do
   test "part one" do
     assert Day01.part_one() == 3_342_946
   end
+
+  test "mass 14 part 2" do
+    assert Day01.calculate_fuel_recursively(14) == 2
+  end
+
+  test "mass 1969 part 2" do
+    assert Day01.calculate_fuel_recursively(1969) == 966
+  end
+
+  test "mass 100756 part 2" do
+    assert Day01.calculate_fuel_recursively(100_756) == 50346
+  end
 end
