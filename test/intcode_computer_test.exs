@@ -1,4 +1,7 @@
 defmodule IntcodeComputerTest do
+  @moduledoc """
+  Tests for the Intcode Computer for Advent of Code 2019.
+  """
   use ExUnit.Case
   doctest IntcodeComputer
 
@@ -7,7 +10,7 @@ defmodule IntcodeComputerTest do
   end
 
   test "2,3,0,3,99" do
-    assert IntcodeComputer.run_program([2, 3, 0, 3, 99 ]) == [2, 3, 0, 6, 99]
+    assert IntcodeComputer.run_program([2, 3, 0, 3, 99]) == [2, 3, 0, 6, 99]
   end
 
   test "2,4,4,5,99,0" do
