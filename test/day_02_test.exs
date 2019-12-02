@@ -18,4 +18,9 @@ defmodule Day02Test do
     output = Day02.run_program("1,1,1,4,99,5,6,0,99")
     assert output == [30, 1, 1, 4, 2, 5, 6, 0, 99]
   end
+
+  test "part one solution" do
+    output = Day02.part_one
+    assert Enum.at(output, 0) == 3931283
+  end
 end
