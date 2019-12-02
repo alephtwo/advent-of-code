@@ -2,16 +2,23 @@ defmodule Day02 do
   @input File.read!("priv/02.txt")
 
   def part_one do
-    run_program @input
+    @input
+      |> parse_input()
+      |> List.replace_at(1, 12)
+      |> List.replace_at(2, 2)
+      |> run_program()
   end
 
-  def run_program(input) do
-    program = parse_input(input)
-              |> List.replace_at(1, 12)
-              |> List.replace_at(2, 2)
+  # Handle string input by parsing it before running it
+  def run_program(program) when is_binary(program) do
+    program |> parse_input() |> run_program()
+  end
+  # Run the program
+  def run_program(program) when is_list(program) do
+    program
   end
 
-  defp parse_input(input) do
+  def parse_input(input) do
     input
     |> String.trim()
     |> String.split(",", trim: true)
