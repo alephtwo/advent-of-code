@@ -1,4 +1,7 @@
 defmodule Day03 do
+  @moduledoc """
+  Day 3 of Advent of Code 2019.
+  """
   @input File.read!("priv/03.txt")
          |> String.split("\n", trim: true)
          |> Enum.map(fn x -> String.split(x, ",", trim: true) end)
@@ -7,6 +10,7 @@ defmodule Day03 do
     min_manhattan_distance(@input)
   end
 
+  @spec min_manhattan_distance(list) :: number
   def min_manhattan_distance(wires) when is_list(wires) do
     [first, second] = Enum.map(wires, fn wire ->
       Enum.reduce(wire, [{0, 0}], &reduce_path/2)
