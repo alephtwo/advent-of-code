@@ -22,4 +22,8 @@ defmodule Day03Test do
 
     assert Day03.min_manhattan_distance(wires) == 135
   end
+
+  test "part one solution" do
+    assert Day03.part_one() == 303
+  end
 end
