@@ -46,6 +46,6 @@ defmodule Day03Test do
   end
 
   test "part two solution" do
-    assert Day03.part_two() == 11222
+    assert Day03.part_two() == 11_222
   end
 end

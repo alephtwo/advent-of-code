@@ -8,13 +8,19 @@ defmodule Day03 do
 
   @central_point {0, 0}
 
-  def part_one do
-    min_manhattan_distance(@input)
-  end
+  @doc """
+  Solves part one of the puzzle as prompted.
+  """
+  def part_one, do: min_manhattan_distance(@input)
 
+  @doc """
+  Determines the minimum manhattan distance from an intersection to the central
+  port.
+  """
   @spec min_manhattan_distance(list) :: number
   def min_manhattan_distance(wires) when is_list(wires) do
     [%{paths: first}, %{paths: second}] = get_paths(wires)
+
     first
     |> MapSet.delete(@central_point)
     |> MapSet.intersection(second)
@@ -22,10 +28,15 @@ defmodule Day03 do
     |> Enum.min()
   end
 
-  def part_two do
-    min_junction_distance(@input)
-  end
+  @doc """
+  Solves part two of the puzzle as prompted.
+  """
+  def part_two, do: min_junction_distance(@input)
 
+  @doc """
+  Determines the minimum distance from a junction to the central port in terms
+  of the total length of both wires until that junction.
+  """
   @spec min_junction_distance(list) :: number
   def min_junction_distance(wires) when is_list(wires) do
     [first, second] = get_paths(wires)
@@ -53,12 +64,13 @@ defmodule Day03 do
 
   defp reduce_path(instruction, %{paths: paths, step: step, steps: steps, current: {x, y}}) do
     length = instruction |> String.slice(1..-1) |> String.to_integer()
+
     directions =
       case String.first(instruction) do
-        "U" -> ((y + 1)..(y + length)) |> Enum.map(fn l -> {x, l} end)
-        "D" -> ((y - 1)..(y - length)) |> Enum.map(fn l -> {x, l} end)
-        "R" -> ((x + 1)..(x + length)) |> Enum.map(fn l -> {l, y} end)
-        "L" -> ((x - 1)..(x - length)) |> Enum.map(fn l -> {l, y} end)
+        "U" -> (y + 1)..(y + length) |> Enum.map(fn l -> {x, l} end)
+        "D" -> (y - 1)..(y - length) |> Enum.map(fn l -> {x, l} end)
+        "R" -> (x + 1)..(x + length) |> Enum.map(fn l -> {l, y} end)
+        "L" -> (x - 1)..(x - length) |> Enum.map(fn l -> {l, y} end)
       end
 
     these_steps = directions |> Enum.with_index(step + 1) |> Map.new()
@@ -66,7 +78,8 @@ defmodule Day03 do
     %{
       paths: MapSet.union(paths, MapSet.new(directions)),
       step: step + length,
-      steps: Map.merge(these_steps, steps), # prefer existing entries
+      # prefer existing entries
+      steps: Map.merge(these_steps, steps),
       current: Enum.at(directions, -1)
     }
   end
