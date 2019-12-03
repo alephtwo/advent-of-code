@@ -25,6 +25,8 @@ defmodule Day03 do
   defp get_paths(wires) do
     accumulator = %{
       paths: MapSet.new() |> MapSet.put(@central_point),
+      step: 0,
+      steps: Map.new(),
       current: @central_point
     }
 
@@ -34,7 +36,7 @@ defmodule Day03 do
     [first, second]
   end
 
-  defp reduce_path(instruction, %{paths: paths, current: {x, y}}) do
+  defp reduce_path(instruction, %{paths: paths, step: step, steps: steps, current: {x, y}}) do
     length = instruction |> String.slice(1..-1) |> String.to_integer()
     directions =
       case String.first(instruction) do
@@ -44,8 +46,12 @@ defmodule Day03 do
         "L" -> ((x - 1)..(x - length)) |> Enum.map(fn l -> {l, y} end)
       end
 
+    these_steps = directions |> Enum.with_index(step) |> Map.new()
+
     %{
       paths: MapSet.union(paths, MapSet.new(directions)),
+      step: step + length,
+      steps: Map.merge(these_steps, steps), # prefer existing entries
       current: Enum.at(directions, -1)
     }
   end
