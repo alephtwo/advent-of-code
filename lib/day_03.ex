@@ -14,11 +14,23 @@ defmodule Day03 do
 
   @spec min_manhattan_distance(list) :: number
   def min_manhattan_distance(wires) when is_list(wires) do
-    [first, second] = get_paths(wires)
+    [%{paths: first}, %{paths: second}] = get_paths(wires)
     first
     |> MapSet.delete(@central_point)
     |> MapSet.intersection(second)
     |> Enum.map(fn {x, y} -> abs(x) + abs(y) end)
+    |> Enum.min()
+  end
+
+  def min_junction_distance(wires) when is_list(wires) do
+    [first, second] = get_paths(wires)
+
+    # Figure out where intersections are
+    junctions = MapSet.intersection(first.paths, second.paths)
+
+    junctions
+    |> Enum.map(fn j -> Map.get(first.steps, j, 0) + Map.get(second.steps, j, 0) end)
+    |> Enum.filter(fn x -> x != 0 end)
     |> Enum.min()
   end
 
@@ -30,10 +42,8 @@ defmodule Day03 do
       current: @central_point
     }
 
-    [%{paths: first}, %{paths: second}] = Enum.map(wires, fn wire ->
-      Enum.reduce(wire, accumulator, &reduce_path/2)
-    end)
-    [first, second]
+    wires
+    |> Enum.map(fn wire -> Enum.reduce(wire, accumulator, &reduce_path/2) end)
   end
 
   defp reduce_path(instruction, %{paths: paths, step: step, steps: steps, current: {x, y}}) do
@@ -46,7 +56,7 @@ defmodule Day03 do
         "L" -> ((x - 1)..(x - length)) |> Enum.map(fn l -> {l, y} end)
       end
 
-    these_steps = directions |> Enum.with_index(step) |> Map.new()
+    these_steps = directions |> Enum.with_index(step + 1) |> Map.new()
 
     %{
       paths: MapSet.union(paths, MapSet.new(directions)),
