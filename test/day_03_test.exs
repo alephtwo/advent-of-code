@@ -23,6 +23,7 @@ defmodule Day03Test do
     assert Day03.min_manhattan_distance(wires) == 135
   end
 
+  @tag :slow
   test "part one solution" do
     assert Day03.part_one() == 303
   end
@@ -45,6 +46,7 @@ defmodule Day03Test do
     assert Day03.min_junction_distance(wires) == 410
   end
 
+  @tag :slow
   test "part two solution" do
     assert Day03.part_two() == 11_222
   end
