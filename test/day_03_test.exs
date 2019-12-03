@@ -44,4 +44,8 @@ defmodule Day03Test do
 
     assert Day03.min_junction_distance(wires) == 410
   end
+
+  test "part two solution" do
+    assert Day03.part_two() == 11222
+  end
 end

@@ -22,6 +22,11 @@ defmodule Day03 do
     |> Enum.min()
   end
 
+  def part_two do
+    min_junction_distance(@input)
+  end
+
+  @spec min_junction_distance(list) :: number
   def min_junction_distance(wires) when is_list(wires) do
     [first, second] = get_paths(wires)
 
