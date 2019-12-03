@@ -1,6 +1,6 @@
 defmodule Day03 do
   @input File.read!("priv/03.txt")
-         |> String.split("\n")
+         |> String.split("\n", trim: true)
          |> Enum.map(fn x -> String.split(x, ",", trim: true) end)
 
   def part_one do
@@ -31,6 +31,6 @@ defmodule Day03 do
         "R" -> ((x + 1)..(x + amount)) |> Enum.map(fn l -> {l, y} end)
         "L" -> ((x - 1)..(x - amount)) |> Enum.map(fn l -> {l, y} end)
       end
-    acc ++ directions
+    acc ++ directions |> Enum.uniq
   end
 end
