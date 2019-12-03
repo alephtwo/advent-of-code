@@ -8,6 +8,7 @@ defmodule IntcodeComputer do
   """
   @spec run_program(list) :: list
   def run_program(memory) when is_list(memory), do: run_program(memory, 0)
+
   defp run_program(memory, ic) when is_list(memory) do
     case execute(memory, ic) do
       {:stop, memory} -> memory

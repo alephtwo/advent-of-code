@@ -3,9 +3,9 @@ defmodule Day02 do
   Day 2 of Advent of Code 2019.
   """
   @input File.read!("priv/02.txt")
-    |> String.trim()
-    |> String.split(",", trim: true)
-    |> Enum.map(&String.to_integer(&1))
+         |> String.trim()
+         |> String.split(",", trim: true)
+         |> Enum.map(&String.to_integer(&1))
 
   @doc """
   Run Day 2, Part 1.
