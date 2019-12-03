@@ -12,29 +12,36 @@ defmodule Day03 do
 
   @spec min_manhattan_distance(list) :: number
   def min_manhattan_distance(wires) when is_list(wires) do
-    [first, second] = Enum.map(wires, fn wire ->
-      Enum.reduce(wire, [{0, 0}], &reduce_path/2)
+    central_point = {0, 0}
+    accumulator = %{
+      paths: MapSet.new() |> MapSet.put(central_point),
+      current: central_point
+    }
+
+    [%{paths: first}, %{paths: second}] = Enum.map(wires, fn wire ->
+      Enum.reduce(wire, accumulator, &reduce_path/2)
     end)
 
     first
-    |> Enum.filter(fn x -> x != {0, 0} end)
-    |> Enum.filter(fn x -> Enum.member?(second, x) end)
+    |> MapSet.delete({0, 0})
+    |> MapSet.intersection(second)
     |> Enum.map(fn {x, y} -> abs(x) + abs(y) end)
     |> Enum.min()
   end
 
-  defp reduce_path(instruction, acc) do
-    {x, y} = Enum.at(acc, -1)
-    amount = instruction
-             |> String.slice(1..-1)
-             |> String.to_integer()
+  defp reduce_path(instruction, %{paths: paths, current: {x, y}}) do
+    length = instruction |> String.slice(1..-1) |> String.to_integer()
     directions =
       case String.first(instruction) do
-        "U" -> ((y + 1)..(y + amount)) |> Enum.map(fn l -> {x, l} end)
-        "D" -> ((y - 1)..(y - amount)) |> Enum.map(fn l -> {x, l} end)
-        "R" -> ((x + 1)..(x + amount)) |> Enum.map(fn l -> {l, y} end)
-        "L" -> ((x - 1)..(x - amount)) |> Enum.map(fn l -> {l, y} end)
+        "U" -> ((y + 1)..(y + length)) |> Enum.map(fn l -> {x, l} end)
+        "D" -> ((y - 1)..(y - length)) |> Enum.map(fn l -> {x, l} end)
+        "R" -> ((x + 1)..(x + length)) |> Enum.map(fn l -> {l, y} end)
+        "L" -> ((x - 1)..(x - length)) |> Enum.map(fn l -> {l, y} end)
       end
-    acc ++ directions |> Enum.uniq
+
+    %{
+      paths: MapSet.union(paths, MapSet.new(directions)),
+      current: Enum.at(directions, -1)
+    }
   end
 end
