@@ -16,4 +16,24 @@ defmodule Day04Test do
   test "fail: no double" do
     assert Day04.passes_criteria("123789") == false
   end
+
+  test "part one solution" do
+    assert Day04.part_one() == 910
+  end
+
+  test "repeated digits are exactly two digits long" do
+    assert Day04.passes_strict_criteria("112233") == true
+  end
+
+  test "no large groups of repeated digits" do
+    assert Day04.passes_strict_criteria("123444") == false
+  end
+
+  test "large groups, but there is a double group" do
+    assert Day04.passes_strict_criteria("111122") == true
+  end
+
+  test "part two solution" do
+    assert Day04.part_two() == 598
+  end
 end
