@@ -32,6 +32,8 @@ defmodule IntcodeComputer do
     case opcode do
       1 -> 4
       2 -> 4
+      3 -> 2
+      4 -> 2
       99 -> 4
     end
   end
