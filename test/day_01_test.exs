@@ -3,7 +3,9 @@ defmodule Day01Test do
   Tests for Day 1 of Advent of Code 2020.
   """
   use ExUnit.Case
+  @moduletag :finished
   doctest Day01
+  
 
   @sample [1721, 979, 366, 299, 675, 1456]
 
