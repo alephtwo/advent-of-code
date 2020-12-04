@@ -9,4 +9,10 @@ defmodule Day03 do
 
   def part_two do
   end
+
+  def parse_map(text) do
+    text
+    |> String.split("\n", trim: true)
+    |> Enum.map(&String.graphemes/1)
+  end
 end
