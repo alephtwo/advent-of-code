@@ -52,7 +52,12 @@ defmodule Day03Test do
     assert Day03.part_one() == 209
   end
 
-  # test "part 2 solution" do
-  #   assert Day03.part_two() == nil
-  # end
+  test "part 2 sample solution" do
+    map = Day03.parse_map(@sample)
+    assert Day03.all_slopes_tree_product(map) == 336
+  end
+
+  test "part 2 solution" do
+    assert Day03.part_two() == 1_574_890_240
+  end
 end
