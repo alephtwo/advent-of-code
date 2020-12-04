@@ -3,8 +3,8 @@ defmodule Day02Test do
   Tests for Day 2 of Advent of Code 2020.
   """
   use ExUnit.Case
-  @moduletag :finished
   doctest Day02
+  @moduletag :finished
 
   @sample [
     "1-3 a: abcde",
