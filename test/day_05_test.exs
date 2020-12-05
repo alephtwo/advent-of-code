@@ -4,6 +4,7 @@ defmodule Day05Test do
   """
   use ExUnit.Case
   doctest Day05
+  @moduletag :finished
 
   test "part 1 sample solutions" do
     assert Day05.parse_seat_id("BFFFBBFRRR") == 567
