@@ -31,15 +31,29 @@ defmodule Day05 do
   end
 
   def follow_row_instructions(instructions) do
-    1
+    binary_space_partition(instructions, 127, "F", "B")
   end
 
   def follow_col_instructions(instructions) do
-    1
+    binary_space_partition(instructions, 7, "L", "R")
+  end
+
+  defp binary_space_partition(instructions, max, lower, upper) do
+    instructions
+    |> String.graphemes()
+    |> Enum.reduce([0, max], fn instruction, [l, u] ->
+      half = div(u - l, 2) + 1
+
+      case instruction do
+        ^lower -> [l, u - half]
+        ^upper -> [l + half, u]
+      end
+    end)
+    |> Enum.at(0)
   end
 
   defp parse_input(input \\ @input) do
-    @input
+    input
     |> String.split("\n", trim: true)
   end
 end
