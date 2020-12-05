@@ -25,11 +25,22 @@ defmodule Day05Test do
            }
   end
 
+  test "test binary partition" do
+    assert Day05.resolve_binary_partition("BFFFBBF") == 70
+    assert Day05.resolve_binary_partition("RRR") == 7
+
+    assert Day05.resolve_binary_partition("FFFBBBF") == 14
+    assert Day05.resolve_binary_partition("RRR") == 7
+
+    assert Day05.resolve_binary_partition("BBFFBBF") == 102
+    assert Day05.resolve_binary_partition("RLL") == 4
+  end
+
   test "part 1 solution" do
     assert Day05.part_one() == 818
   end
 
   test "part 2 solution" do
-    assert Day05.part_two() == nil
+    assert Day05.part_two() == 559
   end
 end

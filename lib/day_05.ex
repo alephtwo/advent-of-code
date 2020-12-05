@@ -5,24 +5,14 @@ defmodule Day05 do
 
   @input File.read!("priv/05.txt")
 
-  def part_one do
-    parse_input()
-    |> Enum.map(&parse_boarding_pass/1)
-    |> Enum.map(fn x -> x.seat_id end)
-    |> Enum.max()
-  end
+  def part_one, do: Enum.max(get_seat_ids())
 
   def part_two do
-    taken_seats =
-      parse_input()
-      |> Enum.map(&parse_boarding_pass/1)
-      |> Enum.map(fn x -> x.seat_id end)
-      |> MapSet.new()
+    taken_seats = MapSet.new(get_seat_ids())
 
     {min, max} = Enum.min_max(taken_seats)
-    all_seats = MapSet.new(min..max)
 
-    all_seats
+    MapSet.new(min..max)
     |> MapSet.difference(taken_seats)
     |> Enum.at(0)
   end
@@ -32,40 +22,25 @@ defmodule Day05 do
     # The remaining 3 are to find your column.
     {r, c} = String.split_at(text, 7)
 
-    row = follow_row_instructions(r)
-    col = follow_col_instructions(c)
+    row = resolve_binary_partition(r)
+    col = resolve_binary_partition(c)
 
-    %{
-      row: row,
-      column: col,
-      seat_id: row * 8 + col
-    }
+    %{row: row, column: col, seat_id: row * 8 + col}
   end
 
-  def follow_row_instructions(instructions) do
-    binary_space_partition(instructions, 127, "F", "B")
-  end
-
-  def follow_col_instructions(instructions) do
-    binary_space_partition(instructions, 7, "L", "R")
-  end
-
-  defp binary_space_partition(instructions, max, lower, upper) do
+  def resolve_binary_partition(instructions) do
+    # The instructions can be converted directly to their
+    # value by interpreting them as base 2 (with some fiddling).
     instructions
-    |> String.graphemes()
-    |> Enum.reduce([0, max], fn instruction, [l, u] ->
-      half = div(u - l, 2) + 1
-
-      case instruction do
-        ^lower -> [l, u - half]
-        ^upper -> [l + half, u]
-      end
-    end)
-    |> Enum.at(0)
+    |> String.replace(~r/(F|L)/, "0")
+    |> String.replace(~r/(B|R)/, "1")
+    |> String.to_integer(2)
   end
 
-  defp parse_input(input \\ @input) do
+  defp get_seat_ids(input \\ @input) do
     input
     |> String.split("\n", trim: true)
+    |> Enum.map(&parse_boarding_pass/1)
+    |> Enum.map(fn x -> x.seat_id end)
   end
 end
