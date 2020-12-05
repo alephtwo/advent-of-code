@@ -21,12 +21,12 @@ defmodule Day04Test do
   iyr:2011 ecl:brn hgt:59in
   """
 
-  test "part 1 sample solution" do 
+  test "part 1 sample solution" do
     assert Day04.part_one(@sample) == 2
   end
 
   test "part 1 solution" do
-    assert Day04.part_one() == nil
+    assert Day04.part_one() == 210
   end
 
   test "part 2 solution" do
