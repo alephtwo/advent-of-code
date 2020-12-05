@@ -4,6 +4,7 @@ defmodule Day04Test do
   """
   use ExUnit.Case
   doctest Day04
+  @moduletag :finished
 
   @sample """
   ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
