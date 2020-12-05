@@ -13,6 +13,18 @@ defmodule Day05 do
   end
 
   def part_two do
+    taken_seats =
+      parse_input()
+      |> Enum.map(&parse_boarding_pass/1)
+      |> Enum.map(fn x -> x.seat_id end)
+      |> MapSet.new()
+
+    {min, max} = Enum.min_max(taken_seats)
+    all_seats = MapSet.new(min..max)
+
+    all_seats
+    |> MapSet.difference(taken_seats)
+    |> Enum.at(0)
   end
 
   def parse_boarding_pass(text) do

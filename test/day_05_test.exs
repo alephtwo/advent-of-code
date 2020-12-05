@@ -29,7 +29,7 @@ defmodule Day05Test do
     assert Day05.part_one() == 818
   end
 
-  # test "part 2 solution" do
-  #   assert Day05.part_two() == nil
-  # end
+  test "part 2 solution" do
+    assert Day05.part_two() == nil
+  end
 end
