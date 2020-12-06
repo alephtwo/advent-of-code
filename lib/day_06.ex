@@ -13,13 +13,26 @@ defmodule Day06 do
     |> Enum.sum()
   end
 
-  def part_two, do: :error
+  def part_two(input \\ @input) do
+    input
+    |> parse_input()
+    |> Enum.map(&determine_everyone_yes_responses/1)
+    |> Enum.map(&Enum.count/1)
+    |> Enum.sum()
+  end
 
   defp determine_group_yes_responses(responses) do
     responses
     |> Enum.map(&String.graphemes/1)
     |> Enum.map(&MapSet.new/1)
     |> Enum.reduce(&MapSet.union/2)
+  end
+
+  defp determine_everyone_yes_responses(responses) do
+    responses
+    |> Enum.map(&String.graphemes/1)
+    |> Enum.map(&MapSet.new/1)
+    |> Enum.reduce(&MapSet.intersection/2)
   end
 
   defp parse_input(input) do
