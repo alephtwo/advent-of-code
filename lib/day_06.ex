@@ -8,12 +8,21 @@ defmodule Day06 do
   def part_one(input \\ @input) do
     input
     |> parse_input()
-    |> IO.inspect()
+    |> Enum.map(&determine_group_yes_responses/1)
+    |> Enum.map(&Enum.count/1)
+    |> Enum.sum()
   end
 
   def part_two, do: :error
 
-  def parse_input(input) do
+  defp determine_group_yes_responses(responses) do
+    responses
+    |> Enum.map(&String.graphemes/1)
+    |> Enum.map(&MapSet.new/1)
+    |> Enum.reduce(&MapSet.union/2)
+  end
+
+  defp parse_input(input) do
     input
     |> String.split("\n\n", trim: true)
     |> Enum.map(&String.split(&1, "\n", trim: true))
