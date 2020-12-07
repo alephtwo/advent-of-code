@@ -19,7 +19,28 @@ defmodule Day07 do
     |> Enum.count()
   end
 
-  def part_two(input \\ @input), do: input
+  def part_two(input \\ @input) do
+    graph = parse_graph(input)
+
+    # Starting at "shiny gold," let's figure out how many we've got
+    count_bags(graph, "shiny gold")
+  end
+
+  def count_bags(graph, vertex) do
+    # Figure out how many outgoing edges we have.
+    outgoing = :digraph.out_degree(graph, vertex)
+
+    # Then, get the children of this node and run this for each child.
+    bags_from_children =
+      graph
+      |> :digraph.out_neighbours(vertex)
+      # This is the "base condition" for recursion.
+      # It won't map if there's no out neighbors.
+      |> Enum.map(fn c -> count_bags(graph, c) end)
+      |> Enum.sum()
+
+    outgoing + bags_from_children
+  end
 
   defp parse_graph(input) do
     input
