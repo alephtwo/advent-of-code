@@ -21,9 +21,9 @@ defmodule Day07Test do
     assert Day07.part_one(@sample) == 4
   end
 
-  # test "part 1 solution" do
-  #   assert Day07.part_one() == :ok
-  # end
+  test "part 1 solution" do
+    assert Day07.part_one() == 370
+  end
 
   # test "part 2 solution" do
   #   assert Day07.part_two() == :ok

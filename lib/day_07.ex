@@ -6,9 +6,17 @@ defmodule Day07 do
   @input File.read!("priv/07.txt")
 
   def part_one(input \\ @input) do
-    input
-    |> parse_graph()
-    |> IO.inspect()
+    graph = parse_graph(input)
+
+    # Go over every one of the vertices and try to find
+    # the shortest path to "shiny gold."
+    graph
+    |> :digraph.vertices()
+    |> Enum.map(&:digraph.get_short_path(graph, &1, "shiny gold"))
+    # Filter out paths where the path is "false," which means there is not a path.
+    |> Enum.filter(fn p -> p != false end)
+    # The puzzle wants to know how many there are.
+    |> Enum.count()
   end
 
   def part_two(input \\ @input), do: input
@@ -48,6 +56,8 @@ defmodule Day07 do
         |> Enum.each(fn color -> :digraph.add_edge(graph, node.type, color) end)
       end)
     end)
+
+    graph
   end
 
   defp parse_contents(contents) do
