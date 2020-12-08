@@ -5,7 +5,7 @@ defmodule Day08 do
   @input File.read!("priv/08.txt")
 
   def part_one(input \\ @input) do
-    final_state =
+    {:break, final_state} =
       input
       |> parse_input()
       |> run_program()
@@ -26,32 +26,40 @@ defmodule Day08 do
   end
 
   defp resolve_state(state) do
-    if MapSet.member?(state.executed, state.pc) do
-      state
-    else
-      instruction = Enum.at(state.program, state.pc)
+    cond do
+      # Detect infinite loops
+      MapSet.member?(state.executed, state.pc) ->
+        {:break, state}
 
-      base_next_state =
-        Map.merge(state, %{
-          executed: MapSet.put(state.executed, state.pc)
-        })
+      # Finish if we're done!
+      state.pc > Enum.count(state.program) ->
+        {:complete, state}
 
-      next_state =
-        case Enum.at(state.program, state.pc).operation do
-          "acc" ->
-            base_next_state
-            |> Map.update!(:accumulator, fn acc -> acc + instruction.argument end)
-            |> Map.update!(:pc, fn pc -> pc + 1 end)
+      # Otherwise, step and recurse
+      true ->
+        instruction = Enum.at(state.program, state.pc)
 
-          "jmp" ->
-            Map.update!(base_next_state, :pc, fn pc -> pc + instruction.argument end)
+        base_next_state =
+          Map.merge(state, %{
+            executed: MapSet.put(state.executed, state.pc)
+          })
 
-          "nop" ->
-            Map.update!(base_next_state, :pc, fn pc -> pc + 1 end)
-        end
+        next_state =
+          case Enum.at(state.program, state.pc).operation do
+            "acc" ->
+              base_next_state
+              |> Map.update!(:accumulator, fn acc -> acc + instruction.argument end)
+              |> Map.update!(:pc, fn pc -> pc + 1 end)
 
-      # Recurse!
-      resolve_state(next_state)
+            "jmp" ->
+              Map.update!(base_next_state, :pc, fn pc -> pc + instruction.argument end)
+
+            "nop" ->
+              Map.update!(base_next_state, :pc, fn pc -> pc + 1 end)
+          end
+
+        # Recurse!
+        resolve_state(next_state)
     end
   end
 
