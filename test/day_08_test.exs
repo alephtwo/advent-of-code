@@ -28,4 +28,8 @@ defmodule Day08Test do
   test "part 2 sample solution" do
     assert Day08.part_two(@sample) == 8
   end
+
+  test "part 2 solution" do
+    assert Day08.part_two() == 1023
+  end
 end

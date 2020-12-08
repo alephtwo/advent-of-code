@@ -13,7 +13,33 @@ defmodule Day08 do
     final_state.accumulator
   end
 
-  def part_two(input \\ @input), do: input
+  def part_two(input \\ @input) do
+    program = parse_input(input)
+
+    indices_to_replace =
+      program
+      |> Enum.with_index()
+      |> Enum.filter(fn {i, _} -> i.operation == "jmp" || i.operation == "nop" end)
+      |> Enum.map(fn {_, i} -> i end)
+
+    # Loop over all of the indexes we want to replace and swap out just one at a time.
+    # Get a list of all the programs that result from this.
+    programs = Enum.map(indices_to_replace, fn i -> get_edited_program(i, program) end)
+
+    # Run each program to see if it finishes.
+    # Find the one that does and deal with it.
+    {:yes, working_program} =
+      Enum.map(programs, fn program ->
+        case run_program(program) do
+          {:complete, final_state} -> {:yes, final_state}
+          {:break, final_state} -> {:no, final_state}
+        end
+      end)
+      |> Enum.filter(fn {completed, _} -> completed == :yes end)
+      |> Enum.at(0)
+
+    working_program.accumulator
+  end
 
   defp run_program(program) do
     # Start doing some stuff.
@@ -25,7 +51,21 @@ defmodule Day08 do
     })
   end
 
+  defp get_edited_program(index, program) do
+    edited_instruction =
+      Map.update!(Enum.at(program, index), :operation, fn o ->
+        case o do
+          "jmp" -> "nop"
+          "nop" -> "jmp"
+        end
+      end)
+
+    List.replace_at(program, index, edited_instruction)
+  end
+
   defp resolve_state(state) do
+    instruction = Enum.at(state.program, state.pc)
+
     cond do
       # Detect infinite loops
       MapSet.member?(state.executed, state.pc) ->
@@ -35,17 +75,18 @@ defmodule Day08 do
       state.pc > Enum.count(state.program) ->
         {:complete, state}
 
+      instruction == nil ->
+        {:complete, state}
+
       # Otherwise, step and recurse
       true ->
-        instruction = Enum.at(state.program, state.pc)
-
         base_next_state =
           Map.merge(state, %{
             executed: MapSet.put(state.executed, state.pc)
           })
 
         next_state =
-          case Enum.at(state.program, state.pc).operation do
+          case instruction.operation do
             "acc" ->
               base_next_state
               |> Map.update!(:accumulator, fn acc -> acc + instruction.argument end)
