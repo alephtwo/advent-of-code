@@ -21,9 +21,9 @@ defmodule Day08Test do
     assert Day08.part_one(@sample) == 5
   end
 
-  # test "part 1 solution" do
-  #   assert Day08.part_one() == :ok
-  # end
+  test "part 1 solution" do
+    assert Day08.part_one() == :ok
+  end
 
   # test "part 2 solution" do
   #   assert Day08.part_two() == :ok
