@@ -4,6 +4,7 @@ defmodule Day08Test do
   """
   use ExUnit.Case
   doctest Day08
+  @moduletag :finished
 
   @sample """
   nop +0
