@@ -28,14 +28,9 @@ defmodule Day08 do
 
     # Run each program to see if it finishes.
     # Find the one that does and deal with it.
-    {:yes, working_program} =
-      Enum.map(programs, fn program ->
-        case run_program(program) do
-          {:complete, final_state} -> {:yes, final_state}
-          {:break, final_state} -> {:no, final_state}
-        end
-      end)
-      |> Enum.filter(fn {completed, _} -> completed == :yes end)
+    {:complete, working_program} =
+      Enum.map(programs, fn program -> run_program(program) end)
+      |> Enum.filter(fn {completed, _} -> completed == :complete end)
       |> Enum.at(0)
 
     working_program.accumulator
