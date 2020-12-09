@@ -32,9 +32,11 @@ defmodule Day09Test do
     assert Day09.part_one(@sample, 5) == 127
   end
 
-  # test "part 1 solution" do
-  #   assert Day09.part_one() == :ok
-  # end
+  # This works but OH BOY is it slow.
+  @tag :finished
+  test "part 1 solution" do
+    assert Day09.part_one() == :ok
+  end
 
   # test "part 2 sample solution" do
   #   assert Day09.part_two(@sample) == :ok

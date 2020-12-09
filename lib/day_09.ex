@@ -19,6 +19,31 @@ defmodule Day09 do
   end
 
   defp determine_vulnerability(input, bandwidth) do
-    input
+    length = Enum.count(input)
+
+    # Use this range as the indexes to scan in the array.
+    {number, _} =
+      bandwidth..(length - 1)
+      # Associate each index with its value and the list of values that
+      # must be checked before it.
+      |> Stream.map(fn i -> {Enum.at(input, i), Enum.slice(input, i - bandwidth, i)} end)
+      |> Stream.filter(fn x -> !confirm_valid_number(x) end)
+      # Grab the very first.
+      |> Stream.take(1)
+      |> Enum.at(0)
+
+    number
+  end
+
+  defp confirm_valid_number({number, preamble}) do
+    indexed_preamble = Enum.with_index(preamble)
+
+    # Build a list of pairs in the preamble.
+    pairs = for {x, ix} <- indexed_preamble, {y, iy} <- indexed_preamble, ix != iy, do: [x, y]
+
+    pairs
+    |> Enum.map(&Enum.sum/1)
+    |> MapSet.new()
+    |> MapSet.member?(number)
   end
 end
