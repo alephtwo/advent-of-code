@@ -1,9 +1,7 @@
 defmodule Day01Test do
   use ExUnit.Case
   doctest Day01
-  alias Day01
-
-  @puzzle_input File.read!("priv/01.txt")
+  @moduletag :finished
 
   @sample_input """
   199
@@ -17,6 +15,8 @@ defmodule Day01Test do
   260
   263
   """
+
+  @puzzle_input File.read!("priv/01.txt")
 
   test "part 1 example" do
     assert Day01.part_one(@sample_input) == 7

@@ -2,7 +2,6 @@ defmodule Day01 do
   @moduledoc """
   Day 1 of the Advent of Code 2021.
   """
-  @input File.read!("priv/01.txt")
 
   @doc """
   You're minding your own business on a ship at sea when the overboard alarm
