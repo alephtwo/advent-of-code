@@ -3,6 +3,8 @@ defmodule Day01Test do
   doctest Day01
   alias Day01
 
+  @puzzle_input File.read!("priv/01.txt")
+
   @sample_input """
   199
   200
@@ -21,7 +23,7 @@ defmodule Day01Test do
   end
 
   test "part 1 solution" do
-    assert Day01.part_one() == 1482
+    assert Day01.part_one(@puzzle_input) == 1482
   end
 
   test "part 2 example" do
@@ -29,6 +31,6 @@ defmodule Day01Test do
   end
 
   test "part 2 solution" do
-    assert Day01.part_two() == 1518
+    assert Day01.part_two(@puzzle_input) == 1518
   end
 end
