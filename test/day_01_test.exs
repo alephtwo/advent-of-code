@@ -29,6 +29,6 @@ defmodule Day01Test do
   end
 
   test "part 2 solution" do
-    assert Day01.part_two() == nil
+    assert Day01.part_two() == 1518
   end
 end
