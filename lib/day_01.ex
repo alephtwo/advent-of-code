@@ -2,18 +2,17 @@ defmodule Day01 do
   @input File.read!("priv/01.txt")
 
   def part_one(input \\ @input) do
-    input
-    |> parse_input
-    |> Enum.reduce(%{sum: 0, prev: nil}, fn n, acc ->
-      case n > acc.prev do
-        true -> %{sum: acc.sum + 1, prev: n}
-        false -> %{sum: acc.sum, prev: n}
-      end
-    end)
-    |> Map.get(:sum)
+    depths = input |> parse_input
+
+    depths
+    |> Enum.with_index
+    |> Enum.map(fn {x, i} -> if x > Enum.at(depths, i - 1), do: 1, else: 0 end)
+    |> Enum.sum
   end
 
-  def part_two(input \\ @input), do: nil
+  def part_two(input \\ @input) do
+
+  end
 
   defp parse_input(raw) do
     raw

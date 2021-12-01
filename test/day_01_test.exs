@@ -23,4 +23,12 @@ defmodule Day01Test do
   test "part 1 solution" do
     assert Day01.part_one() == 1482
   end
+
+  # test "part 2 example" do
+  #   assert Day01.part_two(@sample_input) == 5
+  # end
+
+  # test "part 2 solution" do
+    # assert Day01.part_two() == nil
+  # end
 end
