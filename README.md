@@ -1,21 +1,17 @@
-# AdventOfCode2021
+# Advent of Code 2021
 
-**TODO: Add description**
+Solutions for the [Advent of Code 2021](https://adventofcode.com/2021).
 
-## Installation
+> Advent of Code is an Advent calendar of small programming puzzles for a
+> variety of skill sets and skill levels that can be solved in any
+> programming language you like. People use them as a speed contest, interview
+> prep, company training, university coursework, practice problems, or to
+> challenge each other.
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `advent_of_code_2021` to your list of dependencies in `mix.exs`:
+If you're solving the puzzles yourself, please don't read this code! It
+contains solutions that you could use, and that ruins the spirit of the game.
 
-```elixir
-def deps do
-  [
-    {:advent_of_code_2021, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/advent_of_code_2021](https://hexdocs.pm/advent_of_code_2021).
-
+I will frequently upload a scuffed solution that produces a correct answer
+and then refine it over a series of commits. I try to add documentation from
+the problem so that in the future this can be used as an absolute reference
+for what the problems were at the time.
