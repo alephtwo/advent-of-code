@@ -21,13 +21,11 @@ defmodule Day02Test do
     assert Day02.part_one(@puzzle_input) == 1_813_801
   end
 
-  @tag :unimplemented
   test "part two example" do
     assert Day02.part_two(@sample_input) == 900
   end
 
-  @tag :unimplemented
   test "part two solution" do
-    assert Day02.part_two(@puzzle_input) == nil
+    assert Day02.part_two(@puzzle_input) == 1_960_569_556
   end
 end

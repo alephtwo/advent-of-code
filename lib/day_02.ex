@@ -15,8 +15,23 @@ defmodule Day02 do
   end
 
   def part_two(input) do
-    input
-    |> parse_input
+    final_position =
+      input
+      |> parse_input
+      |> Enum.reduce(%{x: 0, y: 0, aim: 0}, fn instruction, acc ->
+        case instruction do
+          %{direction: "forward", amplitude: a} ->
+            %{x: acc.x + a, y: acc.y + acc.aim * a, aim: acc.aim}
+
+          %{direction: "down", amplitude: a} ->
+            %{x: acc.x, y: acc.y, aim: acc.aim + a}
+
+          %{direction: "up", amplitude: a} ->
+            %{x: acc.x, y: acc.y, aim: acc.aim - a}
+        end
+      end)
+
+    final_position.x * final_position.y
   end
 
   defp parse_input(raw) do
