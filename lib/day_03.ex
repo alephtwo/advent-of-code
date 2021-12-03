@@ -16,7 +16,7 @@ defmodule Day03 do
     rows = input |> parse_input()
 
     o2_rating = process_rows(rows, &Enum.max_by/3, fn a, b -> a > b end)
-    co2_rating = process_rows(rows, &Enum.min_by/3, fn a, b -> a < b end)
+    co2_rating = process_rows(rows, &Enum.min_by/3, fn a, b -> a <= b end)
 
     o2_rating * co2_rating
   end
@@ -45,17 +45,18 @@ defmodule Day03 do
   end
 
   defp process_rows(rows, func, sorter), do: process_rows(rows, 0, func, sorter)
+
   defp process_rows([a], _index, _func, _sorter) do
     a
     |> Enum.join()
-    |> IO.inspect()
     |> String.to_integer(2)
   end
+
   defp process_rows(rows, index, func, sorter) do
     {bit_criteria, _} =
       rows
       |> Enum.map(fn row -> Enum.at(row, index) end)
-      |> Enum.frequencies
+      |> Enum.frequencies()
       |> func.(fn {_, b} -> b end, sorter)
 
     rows
