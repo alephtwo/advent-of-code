@@ -1,6 +1,6 @@
-# Advent of Code 2021
+# Advent of Code
 
-Solutions for the [Advent of Code 2021](https://adventofcode.com/2021).
+Solutions for the [Advent of Code](https://adventofcode.com).
 
 > Advent of Code is an Advent calendar of small programming puzzles for a
 > variety of skill sets and skill levels that can be solved in any
