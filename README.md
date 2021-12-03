@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Advent of Code 2021
 
 Solutions for the [Advent of Code 2021](https://adventofcode.com/2021).
@@ -15,3 +16,26 @@ I will frequently upload a scuffed solution that produces a correct answer
 and then refine it over a series of commits. I try to add documentation from
 the problem so that in the future this can be used as an absolute reference
 for what the problems were at the time.
+=======
+# Aoc2019
+
+**TODO: Add description**
+
+## Installation
+
+If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+by adding `aoc2019` to your list of dependencies in `mix.exs`:
+
+```elixir
+def deps do
+  [
+    {:aoc2019, "~> 0.1.0"}
+  ]
+end
+```
+
+Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
+and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
+be found at [https://hexdocs.pm/aoc2019](https://hexdocs.pm/aoc2019).
+
+>>>>>>> 403815b337eec7c132733c65bc5e044f6f06e99f
