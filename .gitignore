@@ -18,3 +18,10 @@
 /2019/deps/
 /2019/doc/
 /2019/erl_crash.dump
+
+# 2018
+/2018/_build/
+/2018/cover/
+/2018/deps/
+/2018/doc/
+/2018/erl_crash.dump
