@@ -4,3 +4,10 @@
 /2021/deps/
 /2021/doc/
 /2021/erl_crash.dump
+
+# 2020
+/2020/_build/
+/2020/cover/
+/2020/deps/
+/2020/doc/
+/2020/erl_crash.dump
