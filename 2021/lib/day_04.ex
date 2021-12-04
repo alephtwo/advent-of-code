@@ -14,8 +14,13 @@ defmodule Day04 do
   end
 
   def part_two(input) do
-    input
-    |> parse_input()
+    data = input |> parse_input()
+
+    {final_board, last_number} =
+      data.draw_order
+      |> Enum.reduce_while(data.boards, &find_last_winning_board/2)
+
+    score_board(final_board, last_number)
   end
 
   defp parse_input(raw) do
@@ -44,20 +49,7 @@ defmodule Day04 do
   end
 
   defp find_first_winning_board(drawn_number, boards) do
-    boards_with_mark =
-      boards
-      |> Enum.map(fn board ->
-        board
-        |> Enum.map(fn row ->
-          row
-          |> Enum.map(fn col ->
-            case col.value == drawn_number do
-              true -> %{marked: true, value: col.value}
-              false -> col
-            end
-          end)
-        end)
-      end)
+    boards_with_mark = mark_boards(boards, drawn_number)
 
     # Check to see if there is a winner amongst the boards.
     winners =
@@ -68,6 +60,36 @@ defmodule Day04 do
       [a] -> {:halt, {a, drawn_number}}
       _ -> {:cont, boards_with_mark}
     end
+  end
+
+  defp find_last_winning_board(drawn_number, boards) do
+    boards_with_mark = mark_boards(boards, drawn_number)
+
+    # Remove the boards which still haven't won.
+    not_yet_winners = Enum.filter(boards_with_mark, fn b -> !has_board_won(b) end)
+
+    case not_yet_winners do
+      # MAKE A VERY BOLD ASSUMPTION THAT THERE WILL BE A SINGLE LAST BOARD
+      # IF THERE IS MORE THAN ONE IT WILL JUST PICK THE FIRST ONE
+      [] -> {:halt, {Enum.at(boards_with_mark, 0), drawn_number}}
+      _ -> {:cont, not_yet_winners}
+    end
+  end
+
+  defp mark_boards(boards, drawn_number) do
+    boards
+    |> Enum.map(fn board ->
+      board
+      |> Enum.map(fn row ->
+        row
+        |> Enum.map(fn col ->
+          case col.value == drawn_number do
+            true -> %{marked: true, value: col.value}
+            false -> col
+          end
+        end)
+      end)
+    end)
   end
 
   defp has_board_won(board) do

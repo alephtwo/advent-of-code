@@ -34,13 +34,11 @@ defmodule Day04Test do
     assert Day04.part_one(@puzzle_input) == 35670
   end
 
-  @tag :unimplemented
   test "part two example" do
-    assert Day04.part_two(@sample_input) == nil
+    assert Day04.part_two(@sample_input) == 1924
   end
 
-  @tag :unimplemented
   test "part two solution" do
-    assert Day04.part_two(@puzzle_input) == nil
+    assert Day04.part_two(@puzzle_input) == 22704
   end
 end
