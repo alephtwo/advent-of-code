@@ -31,7 +31,7 @@ defmodule Day04Test do
   end
 
   test "part one solution" do
-    assert Day04.part_one(@puzzle_input) == 35670
+    assert Day04.part_one(@puzzle_input) == 35_670
   end
 
   test "part two example" do
@@ -39,6 +39,6 @@ defmodule Day04Test do
   end
 
   test "part two solution" do
-    assert Day04.part_two(@puzzle_input) == 22704
+    assert Day04.part_two(@puzzle_input) == 22_704
   end
 end
