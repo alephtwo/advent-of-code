@@ -162,8 +162,7 @@ defmodule Day03 do
   @spec calculate_frequency_in_column(rows_t()) :: frequencies()
   defp calculate_frequency_in_column(rows) do
     rows
-    |> List.zip()
-    |> Enum.map(&Tuple.to_list/1)
+    |> Matrix.transpose()
     |> Enum.map(&Enum.frequencies/1)
   end
 

@@ -14,6 +14,26 @@ defmodule Day04 do
   end
 
   defp parse_input(raw) do
+    [first | rest] = String.split(raw, "\n\n", trim: true)
+
+    draw_order =
+      first
+      |> String.split(",", trim: true)
+      |> Enum.map(&String.to_integer/1)
+
+    boards =
+      rest
+      |> Enum.map(fn b -> String.split(b, "\n", trim: true) end)
+      |> Enum.map(&parse_board/1)
+
+    %{draw_order: draw_order, boards: boards}
+  end
+
+  defp parse_board(raw) do
     raw
+    |> Enum.map(fn r ->
+      String.split(r, " ", trim: true)
+      |> Enum.map(&String.to_integer/1)
+    end)
   end
 end
