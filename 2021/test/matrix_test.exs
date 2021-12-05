@@ -10,6 +10,6 @@ defmodule MatrixTest do
 
   test "sample matrix should transpose correctly" do
     matrix = [[1, 2, 3], [4, 5, 6], [6, 7, 8]]
-    assert Matrix.transpose(matrix) == [[1, 4, 6], [2, 5, 7], [3, 6, 9]]
+    assert Matrix.transpose(matrix) == [[1, 4, 6], [2, 5, 7], [3, 6, 8]]
   end
 end

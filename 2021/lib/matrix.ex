@@ -23,6 +23,7 @@ defmodule Matrix do
   3 6 9
   ```
   """
+  @spec transpose(list(list(any()))) :: list(list(any()))
   def transpose(matrix) do
     matrix
     |> List.zip()

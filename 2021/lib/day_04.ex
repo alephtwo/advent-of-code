@@ -91,11 +91,10 @@ defmodule Day04 do
   """
   @spec part_one(String.t()) :: integer()
   def part_one(input) do
-    data = input |> parse_input()
+    data = parse_input(input)
 
     {winning_board, last_number} =
-      data.draw_order
-      |> Enum.reduce_while(data.boards, &find_first_winning_board/2)
+      Enum.reduce_while(data.draw_order, data.boards, &find_first_winning_board/2)
 
     score_board(winning_board, last_number)
   end
@@ -119,11 +118,10 @@ defmodule Day04 do
   """
   @spec part_two(String.t()) :: integer()
   def part_two(input) do
-    data = input |> parse_input()
+    data = parse_input(input)
 
     {final_board, last_number} =
-      data.draw_order
-      |> Enum.reduce_while(data.boards, &find_last_winning_board/2)
+      Enum.reduce_while(data.draw_order, data.boards, &find_last_winning_board/2)
 
     score_board(final_board, last_number)
   end
@@ -137,10 +135,7 @@ defmodule Day04 do
       |> String.split(",", trim: true)
       |> Enum.map(&String.to_integer/1)
 
-    boards =
-      rest
-      |> Enum.map(fn b -> String.split(b, "\n", trim: true) end)
-      |> Enum.map(&parse_board/1)
+    boards = Enum.map(rest, fn b -> b |> String.split("\n", trim: true) |> parse_board() end)
 
     %{draw_order: draw_order, boards: boards}
   end
@@ -149,8 +144,7 @@ defmodule Day04 do
   # can work with.
   @spec parse_board(String.t()) :: board_t()
   defp parse_board(raw) do
-    raw
-    |> Enum.map(fn r ->
+    Enum.map(raw, fn r ->
       r
       |> String.split(" ", trim: true)
       |> Enum.map(fn x -> %{marked: false, value: String.to_integer(x)} end)
@@ -164,13 +158,11 @@ defmodule Day04 do
     boards_with_mark = mark_boards(boards, drawn_number)
 
     # Check to see if there is a winner amongst the boards.
-    winners =
-      boards_with_mark
-      |> Enum.filter(&has_board_won/1)
+    winners = Enum.filter(boards_with_mark, &has_board_won/1)
 
     case winners do
       [a] -> {:halt, {a, drawn_number}}
-      _ -> {:cont, boards_with_mark}
+      _other -> {:cont, boards_with_mark}
     end
   end
 
@@ -190,7 +182,7 @@ defmodule Day04 do
       # MAKE A VERY BOLD ASSUMPTION THAT THERE WILL BE A SINGLE LAST BOARD
       # IF THERE IS MORE THAN ONE IT WILL JUST PICK THE FIRST ONE
       [] -> {:halt, {Enum.at(boards_with_mark, 0), drawn_number}}
-      _ -> {:cont, not_yet_winners}
+      _other -> {:cont, not_yet_winners}
     end
   end
 

@@ -143,7 +143,7 @@ defmodule Day03 do
   """
   @spec part_two(String.t()) :: integer()
   def part_two(input) do
-    rows = input |> parse_input()
+    rows = parse_input(input)
 
     o2_rating = find_value_using_bit_criteria(rows, &Enum.max_by/3, fn a, b -> a > b end)
     co2_rating = find_value_using_bit_criteria(rows, &Enum.min_by/3, fn a, b -> a <= b end)
@@ -155,8 +155,7 @@ defmodule Day03 do
   defp parse_input(raw) do
     raw
     |> String.split("\n", trim: true)
-    |> Enum.map(&String.graphemes/1)
-    |> Enum.map(fn row -> Enum.map(row, &String.to_integer/1) end)
+    |> Enum.map(fn s -> s |> String.graphemes() |> Enum.map(&String.to_integer/1) end)
   end
 
   @spec calculate_frequency_in_column(rows_t()) :: frequencies()
@@ -169,9 +168,10 @@ defmodule Day03 do
   @spec find_rate(frequencies(), function()) :: integer()
   defp find_rate(frequencies, func) do
     frequencies
-    |> Enum.map(&Map.to_list/1)
-    |> Enum.map(fn col -> func.(col, fn {_, b} -> b end) end)
-    |> Enum.map_join(fn {a, _} -> a end)
+    |> Enum.map_join(fn freq ->
+      {a, _} = freq |> Map.to_list() |> func.(fn {_, b} -> b end)
+      a
+    end)
     |> String.to_integer(2)
   end
 
