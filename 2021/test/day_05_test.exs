@@ -1,6 +1,7 @@
 defmodule Day05Test do
   use ExUnit.Case
   doctest Day05
+  @moduletag :finished
 
   @sample_input """
   0,9 -> 5,9
