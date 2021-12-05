@@ -8,5 +8,7 @@ Benchee.run(%{
   "day 3 part one" => fn -> Day03.part_one(File.read!("priv/03.txt")) end,
   "day 3 part two" => fn -> Day03.part_two(File.read!("priv/03.txt")) end,
   "day 4 part one" => fn -> Day04.part_one(File.read!("priv/04.txt")) end,
-  "day 4 part two" => fn -> Day04.part_two(File.read!("priv/04.txt")) end
+  "day 4 part one" => fn -> Day04.part_one(File.read!("priv/04.txt")) end,
+  "day 5 part one" => fn -> Day05.part_one(File.read!("priv/05.txt")) end,
+  "day 5 part two" => fn -> Day05.part_two(File.read!("priv/05.txt")) end
 })
