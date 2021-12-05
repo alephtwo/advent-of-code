@@ -18,6 +18,10 @@ defmodule Day05 do
   def part_two(input) do
     input
     |> parse_input()
+    |> draw_lines()
+    |> Enum.frequencies()
+    |> Enum.filter(fn {_, freq} -> freq > 1 end)
+    |> Enum.count()
   end
 
   defp parse_input(raw) do
@@ -41,8 +45,7 @@ defmodule Day05 do
     cond do
       is_horizontal(line) -> Enum.map(x1..x2, fn x -> {x, y1} end)
       is_vertical(line) -> Enum.map(y1..y2, fn y -> {x1, y} end)
-      # diagonal lines... figuring out slope? cringe.
-      true -> {}
+      true -> Enum.zip(x1..x2, y1..y2)
     end
   end
 end
