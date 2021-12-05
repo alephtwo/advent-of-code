@@ -30,6 +30,6 @@ defmodule Day05Test do
   end
 
   test "part two solution" do
-    assert Day05.part_two(@puzzle_input) == 17013
+    assert Day05.part_two(@puzzle_input) == 17_013
   end
 end
