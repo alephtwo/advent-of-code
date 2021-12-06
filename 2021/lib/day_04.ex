@@ -142,7 +142,7 @@ defmodule Day04 do
 
   # Turn the raw, textual representation of a board into a data structure we
   # can work with.
-  @spec parse_board(String.t()) :: board_t()
+  @spec parse_board(list(String.t())) :: board_t()
   defp parse_board(raw) do
     Enum.map(raw, fn r ->
       r
