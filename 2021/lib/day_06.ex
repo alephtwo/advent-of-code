@@ -2,7 +2,7 @@ defmodule Day06 do
   @moduledoc """
   Day 6 of the Advent of Code 2021.
   """
-  @life_cycle 0..8
+  @life_cycle Enum.to_list(0..8)
 
   @doc """
   The sea floor is getting steeper. Maybe the sleigh keys got carried this way?
@@ -84,20 +84,16 @@ defmodule Day06 do
   """
   @spec part_one(String.t(), integer()) :: integer()
   def part_one(input, days \\ 80) do
-    fish =
+    initial_counts =
       input
       |> parse_input()
       |> Enum.frequencies()
-
-    initial_counts =
-      @life_cycle
-      |> Enum.map(fn n -> {n, Map.get(fish, n, 0)} end)
-      |> Map.new()
+      |> Enum.reduce(List.duplicate(0, Enum.count(@life_cycle)), fn {n, f}, acc ->
+        List.replace_at(acc, n, f)
+      end)
 
     1..days
     |> Enum.reduce(initial_counts, &simulate_day/2)
-    |> Enum.to_list()
-    |> Enum.map(fn {_, a} -> a end)
     |> Enum.sum()
   end
 
@@ -119,13 +115,7 @@ defmodule Day06 do
   end
 
   defp simulate_day(_day, counts) do
-    zeroes = Map.get(counts, 0)
-
-    counts
-    |> Map.delete(0)
-    |> Enum.map(fn {n, d} -> {n - 1, d} end)
-    |> Map.new()
-    |> Map.put(8, zeroes)
-    |> Map.update!(6, fn x -> x + zeroes end)
+    [zeroes | rest] = counts
+    List.update_at(rest ++ [zeroes], 6, &(&1 + zeroes))
   end
 end
