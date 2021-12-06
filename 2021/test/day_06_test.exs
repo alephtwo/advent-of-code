@@ -2,19 +2,17 @@ defmodule Day06Test do
   use ExUnit.Case
   doctest Day06
 
-  @sample_input """
-  """
+  @sample_input "3,4,3,1,2\n"
 
   @puzzle_input File.read!("priv/06.txt")
 
-  @tag :unimplemented
   test "part one example" do
-    assert Day06.part_one(@sample_input) == nil
+    assert Day06.part_one(@sample_input, 18) == 26
+    assert Day06.part_one(@sample_input, 80) == 5_934
   end
 
-  @tag :unimplemented
   test "part one solution" do
-    assert Day06.part_one(@puzzle_input) == nil
+    assert Day06.part_one(@puzzle_input, 80) == 386_755
   end
 
   @tag :unimplemented
