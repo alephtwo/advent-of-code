@@ -5,11 +5,21 @@ defmodule Day06 do
 
   @spec part_one(String.t(), integer()) :: integer()
   def part_one(input, days) do
-    initial = parse_input(input)
+    fish =
+      input
+      |> parse_input()
+      |> Enum.frequencies()
+
+    initial_counts =
+      0..8
+      |> Enum.map(fn n -> {n, Map.get(fish, n, 0)} end)
+      |> Map.new()
 
     1..days
-    |> Enum.reduce(initial, &simulate_day/2)
-    |> Enum.count()
+    |> Enum.reduce(initial_counts, &simulate_day/2)
+    |> Enum.to_list()
+    |> Enum.map(fn {_, a} -> a end)
+    |> Enum.sum()
   end
 
   @spec part_two(String.t(), integer()) :: integer()
@@ -22,13 +32,7 @@ defmodule Day06 do
     |> Enum.map(fn s -> String.to_integer(String.trim(s)) end)
   end
 
-  defp simulate_day(day, fish) do
-    IO.inspect(day)
-    Enum.flat_map(fish, fn f ->
-      case f do
-        0 -> [6, 8]
-        x -> [x - 1]
-      end
-    end)
+  defp simulate_day(day, counts) do
+    counts
   end
 end
