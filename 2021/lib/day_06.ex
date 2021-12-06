@@ -12,19 +12,18 @@ defmodule Day06 do
     |> Enum.count()
   end
 
-  @spec part_two(String.t()) :: integer()
-  def part_two(input) do
-    parse_input(input)
-  end
+  @spec part_two(String.t(), integer()) :: integer()
+  def part_two(input, days), do: part_one(input, days)
 
   @spec parse_input(String.t()) :: any()
   defp parse_input(raw) do
     raw
     |> String.split(",", trim: true)
-    |> Enum.map(fn s -> String.to_integer(String.strip(s)) end)
+    |> Enum.map(fn s -> String.to_integer(String.trim(s)) end)
   end
 
-  defp simulate_day(_day, fish) do
+  defp simulate_day(day, fish) do
+    IO.inspect(day)
     Enum.flat_map(fish, fn f ->
       case f do
         0 -> [6, 8]

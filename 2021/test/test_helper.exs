@@ -1,2 +1,2 @@
 ExUnit.start()
-ExUnit.configure(exclude: [:finished, :unimplemented])
+ExUnit.configure(exclude: [:finished, :unimplemented, :cursed])

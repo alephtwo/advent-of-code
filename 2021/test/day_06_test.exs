@@ -15,13 +15,12 @@ defmodule Day06Test do
     assert Day06.part_one(@puzzle_input, 80) == 386_755
   end
 
-  @tag :unimplemented
+  @tag :cursed
   test "part two example" do
-    assert Day06.part_two(@sample_input) == nil
+    assert Day06.part_two(@sample_input, 256) == 26_984_457_539
   end
 
-  @tag :unimplemented
   test "part two solution" do
-    assert Day06.part_two(@puzzle_input) == nil
+    assert Day06.part_two(@puzzle_input, 256) == nil
   end
 end
