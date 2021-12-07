@@ -13,16 +13,14 @@ defmodule Day07Test do
   end
 
   test "part one solution" do
-    assert Day07.part_one(@puzzle_input) == nil
+    assert Day07.part_one(@puzzle_input) == 323_647
   end
 
-  @tag :unimplemented
   test "part two example" do
-    assert Day07.part_two(@sample_input) == nil
+    assert Day07.part_two(@sample_input) == 168
   end
 
-  @tag :unimplemented
   test "part two solution" do
-    assert Day07.part_two(@puzzle_input) == nil
+    assert Day07.part_two(@puzzle_input) == 87_640_209
   end
 end
