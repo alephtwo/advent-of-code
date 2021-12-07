@@ -114,8 +114,12 @@ defmodule Day06 do
     |> Enum.map(fn s -> String.to_integer(String.trim(s)) end)
   end
 
+  @spec simulate_day(integer(), list(integer())) :: list(integer())
   defp simulate_day(_day, counts) do
     [zeroes | rest] = counts
-    List.update_at(rest ++ [zeroes], 6, &(&1 + zeroes))
+
+    [zeroes | Enum.reverse(rest)]
+    |> Enum.reverse()
+    |> List.update_at(6, &(&1 + zeroes))
   end
 end
