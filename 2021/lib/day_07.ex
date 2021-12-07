@@ -127,10 +127,9 @@ defmodule Day07 do
   @spec expensive_cost_to_align_on_position(list(integer()), integer()) :: integer()
   defp expensive_cost_to_align_on_position(list, position) do
     list
-    |> Enum.map(fn p ->
-      distance = abs(p - position)
-      round((Integer.pow(distance, 2) + distance) / 2)
-    end)
+    |> Enum.map(fn p -> triangle_sum(abs(p - position)) end)
     |> Enum.sum()
   end
+
+  defp triangle_sum(n), do: n * (n + 1) / 2
 end
