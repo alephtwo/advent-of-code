@@ -3,16 +3,15 @@ defmodule Day07Test do
   doctest Day07
 
   @sample_input """
+  16,1,2,0,4,2,7,1,2,14
   """
 
   @puzzle_input File.read!("priv/07.txt")
 
-  @tag :unimplemented
   test "part one example" do
-    assert Day07.part_one(@sample_input) == nil
+    assert Day07.part_one(@sample_input) == 37
   end
 
-  @tag :unimplemented
   test "part one solution" do
     assert Day07.part_one(@puzzle_input) == nil
   end
