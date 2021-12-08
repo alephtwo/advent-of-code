@@ -26,7 +26,7 @@ defmodule Day08Test do
   end
 
   test "part two example" do
-    assert Day08.part_two(@sample_input) == 61229
+    assert Day08.part_two(@sample_input) == 61_229
   end
 
   test "part two solution" do

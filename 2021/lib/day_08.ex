@@ -54,11 +54,11 @@ defmodule Day08 do
     dictionary = build_dictionary(signals)
 
     output
-    |> Enum.map(&Map.get(dictionary, &1, 0))
-    |> Enum.join()
+    |> Enum.map_join(&Map.get(dictionary, &1, 0))
     |> String.to_integer()
   end
 
+  # credo:disable-for-next-line
   defp build_dictionary(signals) do
     # Start by finding the signals for our digits of known lengths.
     [one] = find_signals_by_length(signals, 2)
