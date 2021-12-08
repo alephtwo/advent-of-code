@@ -14,6 +14,17 @@ defmodule Day08 do
   end
 
   defp parse_input(raw) do
+    dissect_line = fn line ->
+      [signals, output] =
+        line
+        |> String.split(" | ", trim: true)
+        |> Enum.map(&String.split(&1, " ", trim: true))
+
+      %{signals: signals, output: output}
+    end
+
     raw
+    |> String.split("\n", trim: true)
+    |> Enum.map(dissect_line)
   end
 end
