@@ -1,6 +1,7 @@
 defmodule Day08Test do
   use ExUnit.Case
   doctest Day08
+  @moduletag :finished
 
   @sample_input """
   be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
