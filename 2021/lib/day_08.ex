@@ -5,7 +5,12 @@ defmodule Day08 do
 
   @spec part_one(String.t()) :: integer()
   def part_one(input) do
-    parse_input(input)
+    input
+    |> parse_input()
+    |> Enum.flat_map(&Map.get(&1, :output))
+    |> Enum.map(&transform_to_number_by_length/1)
+    |> Enum.filter(fn x -> x != :not_matched end)
+    |> Enum.count()
   end
 
   @spec part_two(String.t()) :: integer()
@@ -26,5 +31,15 @@ defmodule Day08 do
     raw
     |> String.split("\n", trim: true)
     |> Enum.map(dissect_line)
+  end
+
+  defp transform_to_number_by_length(string) do
+    case String.length(string) do
+      2 -> 1
+      3 -> 7
+      4 -> 4
+      7 -> 8
+      _ -> :not_matched
+    end
   end
 end
