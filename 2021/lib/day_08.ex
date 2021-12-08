@@ -4,26 +4,28 @@ defmodule Day08 do
   """
   @type signal_t :: MapSet.t(String.t())
   @type parsed_line_t :: %{signals: list(signal_t()), output: list(signal_t())}
-  @type translation_dictionary_t :: %{
-          signal_t() => 0,
-          signal_t() => 1,
-          signal_t() => 2,
-          signal_t() => 3,
-          signal_t() => 4,
-          signal_t() => 5,
-          signal_t() => 6,
-          signal_t() => 7,
-          signal_t() => 8,
-          signal_t() => 9
-        }
 
-  # Digits with known lengths.
-  # length => digit
-  @known_lengths %{
-    2 => 1,
-    4 => 4,
-    3 => 7,
-    7 => 8
+  # Here's what a proper 7-seg display looks like:
+  #
+  #  aaaa
+  # b    c
+  # b    c
+  #  ....
+  # e    f
+  # e    f
+  #  gggg
+  #
+  @correct_segments %{
+    0 => "abcefg",
+    1 => "cf",
+    2 => "acdeg",
+    3 => "acdfg",
+    4 => "bcdf",
+    5 => "abdfg",
+    6 => "abdefg",
+    7 => "acf",
+    8 => "abcdefg",
+    9 => "abcdfg"
   }
 
   @doc """
@@ -41,22 +43,22 @@ defmodule Day08 do
 
   ```text
     0:      1:      2:      3:      4:
-  aaaa    ....    aaaa    aaaa    ....
+   aaaa    ....    aaaa    aaaa    ....
   b    c  .    c  .    c  .    c  b    c
   b    c  .    c  .    c  .    c  b    c
-  ....    ....    dddd    dddd    dddd
+   ....    ....    dddd    dddd    dddd
   e    f  .    f  e    .  .    f  .    f
   e    f  .    f  e    .  .    f  .    f
-  gggg    ....    gggg    gggg    ....
+   gggg    ....    gggg    gggg    ....
 
-    5:      6:      7:      8:      9:
-  aaaa    aaaa    aaaa    aaaa    aaaa
+    5:      6:      7:     8:      9:
+   aaaa    aaaa    aaaa    aaaa    aaaa
   b    .  b    .  .    c  b    c  b    c
   b    .  b    .  .    c  b    c  b    c
-  dddd    dddd    ....    dddd    dddd
+   dddd    dddd    ....    dddd    dddd
   .    f  e    f  .    f  e    f  .    f
   .    f  e    f  .    f  e    f  .    f
-  gggg    gggg    ....    gggg    gggg
+   gggg    gggg     ....    gggg    gggg
   ```
 
   So, to render a `1`, only segments `c` and `f` would be turned on; the rest
@@ -131,11 +133,16 @@ defmodule Day08 do
   """
   @spec part_one(String.t()) :: integer()
   def part_one(input) do
+    # How long are the signals for 1, 4, 7, and 8?
+    desired_lengths =
+      [1, 4, 7, 8]
+      |> Enum.map(&String.length(Map.get(@correct_segments, &1)))
+      |> MapSet.new()
+
     input
     |> parse_input()
     |> Enum.flat_map(&Map.get(&1, :output))
-    |> Enum.map(fn x -> Map.get(@known_lengths, Enum.count(x)) end)
-    |> Enum.filter(fn x -> x != nil end)
+    |> Enum.filter(&MapSet.member?(desired_lengths, Enum.count(&1)))
     |> Enum.count()
   end
 
@@ -239,192 +246,53 @@ defmodule Day08 do
     dictionary = build_dictionary(signals)
 
     output
-    |> Enum.map_join(&Map.get(dictionary, &1, 0))
+    |> Enum.map_join(&Map.get(dictionary, &1))
     |> String.to_integer()
   end
 
-  @spec build_dictionary(list(signal_t())) :: translation_dictionary_t()
+  @spec build_dictionary(list(signal_t())) :: %{
+          signal_t() => 0,
+          signal_t() => 1,
+          signal_t() => 2,
+          signal_t() => 3,
+          signal_t() => 4,
+          signal_t() => 5,
+          signal_t() => 6,
+          signal_t() => 7,
+          signal_t() => 8,
+          signal_t() => 9
+        }
   defp build_dictionary(signals) do
-    # Start by finding the signals for our digits of known lengths.
-    %{1 => [one], 4 => [four], 7 => [seven], 8 => [eight]} = find_known_signals(signals)
+    derive_by_length = fn length ->
+      [signal] = Enum.filter(signals, &(Enum.count(&1) == length))
+      signal
+    end
 
-    # Now we need to break down which segments map to what.
-    #   aaaa
-    #  b    c
-    #  b    c
-    #   dddd
-    #  e    f
-    #  e    f
-    #   gggg
+    one = derive_by_length.(2)
+    four = derive_by_length.(4)
 
-    # Segment A is 7 - 1.
-    seg_a = Enum.at(MapSet.difference(seven, one), 0)
+    derive_digit = fn length, common_with_one, common_with_four ->
+      [translation] =
+        Enum.filter(signals, fn signal ->
+          Enum.count(signal) == length and
+            Enum.count(MapSet.intersection(signal, one)) == common_with_one and
+            Enum.count(MapSet.intersection(signal, four)) == common_with_four
+        end)
 
-    %{
-      nine: nine,
-      three: three,
-      seg_g: seg_g,
-      seg_d: seg_d
-    } = find_nine_three_seg_g_seg_d(signals, four, seven, seg_a)
+      translation
+    end
 
     %{
-      zero: zero,
-      two: two,
-      five: five,
-      six: six
-    } =
-      find_zero_two_five_six(
-        signals,
-        [one, three, four, seven, eight, nine],
-        [seg_a, seg_d, seg_g]
-      )
-
-    %{
-      zero => 0,
+      derive_digit.(6, 2, 3) => 0,
       one => 1,
-      two => 2,
-      three => 3,
+      derive_digit.(5, 1, 2) => 2,
+      derive_digit.(5, 2, 3) => 3,
       four => 4,
-      five => 5,
-      six => 6,
-      seven => 7,
-      eight => 8,
-      nine => 9
-    }
-  end
-
-  @spec find_known_signals(list(signal_t())) :: %{
-          1 => list(signal_t()),
-          4 => list(signal_t()),
-          7 => list(signal_t()),
-          8 => list(signal_t())
-        }
-  defp find_known_signals(signals) do
-    %{
-      1 => find_signals_by_length(signals, 2),
-      4 => find_signals_by_length(signals, 4),
-      7 => find_signals_by_length(signals, 3),
-      8 => find_signals_by_length(signals, 7)
-    }
-  end
-
-  @spec find_signals_by_length(list(signal_t()), integer()) :: list(signal_t())
-  defp find_signals_by_length(signals, length) do
-    Enum.filter(signals, &(Enum.count(&1) == length))
-  end
-
-  @spec find_signal_that_is_superset_with_one_additional_segment(list(signal_t()), signal_t()) ::
-          {signal_t(), String.t()}
-  defp find_signal_that_is_superset_with_one_additional_segment(signals, subset) do
-    [result] =
-      signals
-      |> Enum.filter(&MapSet.subset?(subset, &1))
-      |> Enum.map(fn s -> {s, MapSet.difference(s, subset)} end)
-      |> Enum.filter(fn {_, d} -> Enum.count(d) == 1 end)
-      |> Enum.map(fn {s, d} -> {s, Enum.at(d, 0)} end)
-
-    result
-  end
-
-  @spec find_seg_b(signal_t(), signal_t(), String.t()) :: String.t()
-  defp find_seg_b(four, one, seg_d) do
-    four
-    |> MapSet.difference(one)
-    |> MapSet.delete(seg_d)
-    |> Enum.at(0)
-  end
-
-  @spec find_seg_e(signal_t(), signal_t(), String.t(), String.t()) :: String.t()
-  defp find_seg_e(zero, seven, seg_b, seg_g) do
-    zero
-    |> MapSet.difference(seven)
-    |> MapSet.delete(seg_b)
-    |> MapSet.delete(seg_g)
-    |> Enum.at(0)
-  end
-
-  @spec find_seg_c(signal_t(), signal_t(), String.t()) :: String.t()
-  defp find_seg_c(eight, five, seg_e) do
-    eight
-    |> MapSet.difference(five)
-    |> MapSet.delete(seg_e)
-    |> Enum.at(0)
-  end
-
-  @spec find_five(list(signal_t()), signal_t(), signal_t(), signal_t(), String.t()) :: signal_t()
-  defp find_five(signals, three, four, nine, seg_b) do
-    [five] =
-      Enum.filter(signals, fn s ->
-        diff = MapSet.difference(s, three)
-        diff == MapSet.new([seg_b]) && s != four && s != nine
-      end)
-
-    five
-  end
-
-  @spec find_nine_three_seg_g_seg_d(list(signal_t()), signal_t(), signal_t(), String.t()) :: %{
-          nine: signal_t(),
-          seg_g: String.t(),
-          three: signal_t(),
-          seg_d: String.t()
-        }
-  defp find_nine_three_seg_g_seg_d(signals, four, seven, seg_a) do
-    # Adding segment A to 4 will produce something like 9.
-    # Use that to find segment g, and thus 9.
-    {nine, seg_g} =
-      find_signal_that_is_superset_with_one_additional_segment(signals, MapSet.put(four, seg_a))
-
-    # Adding Segment G to 7 will produce something like 3.
-    # Use that to find segment d, and thus 3.
-    {three, seg_d} =
-      find_signal_that_is_superset_with_one_additional_segment(signals, MapSet.put(seven, seg_g))
-
-    %{
-      nine: nine,
-      seg_g: seg_g,
-      three: three,
-      seg_d: seg_d
-    }
-  end
-
-  @spec find_zero_two_five_six(list(signal_t()), list(signal_t()), list(String.t())) :: %{
-          zero: signal_t(),
-          two: signal_t(),
-          five: signal_t(),
-          six: signal_t()
-        }
-  defp find_zero_two_five_six(signals, known_numbers, known_segments) do
-    [one, three, four, seven, eight, nine] = known_numbers
-    [seg_a, seg_d, seg_g] = known_segments
-
-    # Take segment D away from 8 and you get zero.
-    zero = MapSet.delete(eight, seg_d)
-
-    # 4 minus 1 and segment d is segment b.
-    seg_b = find_seg_b(four, one, seg_d)
-
-    # 0 minus 7, segment b, and segment g will give us segment e.
-    seg_e = find_seg_e(zero, seven, seg_b, seg_g)
-
-    # Some signal is 5. If we take 3 off of it, the only thing left will be seg b.
-    # This is also true of 9 and 4 (which we know).
-    five = find_five(signals, three, four, nine, seg_b)
-
-    # 5 is very powerful.
-    # Segment C is 8 minus 5 minus Segment E.
-    seg_c = find_seg_c(eight, five, seg_e)
-
-    # Now we just know two.
-    two = MapSet.new([seg_a, seg_c, seg_d, seg_e, seg_g])
-
-    # Six is 5 plus segment e.
-    six = MapSet.put(five, seg_e)
-
-    %{
-      zero: zero,
-      two: two,
-      five: five,
-      six: six
+      derive_digit.(5, 1, 3) => 5,
+      derive_digit.(6, 1, 3) => 6,
+      derive_by_length.(3) => 7,
+      derive_by_length.(7) => 8,
+      derive_digit.(6, 2, 4) => 9
     }
   end
 end
