@@ -29,4 +29,25 @@ defmodule Matrix do
     |> List.zip()
     |> Enum.map(&Tuple.to_list/1)
   end
+
+  def index_matrix(matrix) do
+    matrix
+    |> Enum.map(&indexed_map/1)
+    |> indexed_map()
+  end
+
+  def get_coordinate(matrix, x, y) when is_map(matrix) do
+    value =
+      matrix
+      # there might not be anything there
+      |> Map.get(y, %{})
+      |> Map.get(x)
+
+    case value do
+      nil -> :not_found
+      n -> n
+    end
+  end
+
+  defp indexed_map(list), do: for({v, k} <- Stream.with_index(list), into: %{}, do: {k, v})
 end
