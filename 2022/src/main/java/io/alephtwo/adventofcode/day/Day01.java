@@ -5,6 +5,12 @@ public class Day01 extends Day {
         super("01.txt");
     }
 
+    public static void main(final String[] args) {
+        final var day = new Day01();
+        System.out.println(day.partOne());
+        System.out.println(day.partTwo());
+    }
+
     @Override
     public int partOne(final String input) {
         return 0;
