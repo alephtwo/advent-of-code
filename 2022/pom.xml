@@ -11,6 +11,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.class>io.alephtwo.adventofcode.day.Day01</main.class>
 
+        <!-- Dependencies -->
+        <logback.version>1.4.5</logback.version>
+        <slf4j.version>2.0.5</slf4j.version>
+
         <!-- Testing -->
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <junit.version>5.9.1</junit.version>
@@ -42,6 +46,21 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -69,6 +88,21 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
