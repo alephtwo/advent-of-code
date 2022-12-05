@@ -16,18 +16,22 @@ defmodule Day05Test do
   move 1 from 1 to 2
   """
 
+  @tag :skip
   test "part 1 example" do
     assert Day05.part_one(@sample_input) == "CMZ"
   end
 
+  @tag :skip
   test "part 1 solution" do
     assert Day05.part_one(@puzzle_input) == "VQZNJMWTR"
   end
 
+  @tag :skip
   test "part 2 example" do
     assert Day05.part_two(@sample_input) == "MCD"
   end
 
+  @tag :skip
   test "part 2 solution" do
     assert Day05.part_two(@puzzle_input) == "NLCDCLVMQ"
   end
