@@ -9,7 +9,7 @@ defmodule Day06 do
   def part_one(input) do
     input
     |> parse_input()
-    |> IO.inspect()
+    |> scrub_input(4)
   end
 
   @doc """
@@ -18,11 +18,20 @@ defmodule Day06 do
   def part_two(input) do
     input
     |> parse_input()
-    |> IO.inspect()
+    |> scrub_input(14)
   end
 
-  defp parse_input(input) do
-    input
-    |> String.split("\n", trim: true)
+  defp parse_input(input), do: String.split(input, "", trim: true)
+
+  defp scrub_input(list, block_size, index \\ 0) do
+    block = Enum.take(list, block_size)
+
+    if block |> Enum.uniq() |> Enum.count() == block_size do
+      # we've found four uniques but the index is block_size behind
+      index + block_size
+    else
+      [_ | rest] = list
+      scrub_input(rest, block_size, index + 1)
+    end
   end
 end
