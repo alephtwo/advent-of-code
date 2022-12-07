@@ -34,8 +34,8 @@ defmodule Day07Test do
     assert Day07.part_one(@sample_input) == 95437
   end
 
-  @tag :skip
   test "part 1 solution" do
+    assert Day07.part_one(@puzzle_input) > 1_377_938 # first wrong answer
     assert Day07.part_one(@puzzle_input) == :ok
   end
 

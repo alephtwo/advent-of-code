@@ -7,10 +7,37 @@ defmodule Day07 do
   """
   @spec part_one(String.t()) :: number()
   def part_one(input) do
-    input
-    |> parse_input()
-    |> Enum.reduce(%{pwd: "/", sizes: %{}}, &process_line/2)
-    |> IO.inspect()
+    %{sizes: sizes} =
+      input
+      |> parse_input()
+      |> Enum.reduce(%{pwd: "/", sizes: %{}}, &process_line/2)
+
+    # For each key, find the other keys that begin with the exact string
+    dirsizes = Enum.reduce(Map.keys(sizes), %{}, fn path, acc ->
+      bytes =
+        sizes
+        |> Map.filter(fn {k, _v} -> is_subdirectory?(k, path) end)
+        |> Enum.map(fn {_, size} -> size end)
+        |> Enum.sum()
+
+      Map.update(acc, path, bytes, fn x -> x + bytes end)
+    end)
+
+    %{counted: _, total: total} = Enum.reduce(dirsizes, %{counted: MapSet.new(), total: 0}, fn {path, size}, acc ->
+      cond do
+        # skip if we've already included a parent
+        MapSet.member?(acc.counted, path) ->
+          acc
+        # if the size isn't 100,000 or less, don't count it
+        size <= 100_000 ->
+          %{ acc | counted: MapSet.put(acc.counted, path), total: acc.total + size}
+        # do something??????
+        true ->
+          acc
+      end
+    end)
+
+    total
   end
 
   @doc """
@@ -61,5 +88,9 @@ defmodule Day07 do
         bytes = String.to_integer(size)
         %{ ctx | sizes: Map.update(ctx.sizes, ctx.pwd, bytes, fn x -> bytes + x end)}
     end
+  end
+
+  defp is_subdirectory?(one, two) do
+    String.starts_with?(one, two)
   end
 end
