@@ -1,5 +1,9 @@
 defmodule Day01 do
   @moduledoc """
+  Day 1 of Advent of Code 2022.
+  """
+
+  @doc """
   Santa's reindeer typically eat regular reindeer food, but they need a lot of
   magical energy to deliver presents on Christmas. For that, their favorite
   snack is a special type of star fruit that only grows deep in the jungle. The
@@ -56,9 +60,7 @@ defmodule Day01 do
   * The fourth Elf is carrying food with `7000`, `8000`, and `9000` Calories, a
       total of `24000` Calories.
   * The fifth Elf is carrying one food item with `10000` Calories.
-  """
 
-  @doc """
   In case the Elves get hungry and need extra snacks, they need to know which
   Elf to ask: they'd like to know how many Calories are being carried by the Elf
   carrying the most Calories. In the example above, this is `24000` (carried by
