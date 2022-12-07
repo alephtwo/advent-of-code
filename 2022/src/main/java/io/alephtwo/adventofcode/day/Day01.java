@@ -1,28 +1,30 @@
 package io.alephtwo.adventofcode.day;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.alephtwo.adventofcode.core.StopThePressesException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.IntStream;
 
-public class Day01 extends Day {
-    private static final Logger LOG = LoggerFactory.getLogger(Day01.class);
-
-    public Day01() {
-        super("01.txt");
-    }
-
-    public static void main(final String[] args) {
-        final var day = new Day01();
-        LOG.info("Part One: {}", day.partOne());
-        LOG.info("Part Two: {}", day.partTwo());
-    }
-
+public class Day01 implements Day {
     @Override
     public int partOne(final String input) {
-        return 0;
+        return parseInput(input).max().orElseThrow(() -> new StopThePressesException("no max"));
     }
 
     @Override
     public int partTwo(final String input) {
-        return 0;
+        return parseInput(input)
+                .boxed()
+                .sorted(Collections.reverseOrder())
+                .limit(3)
+                .mapToInt(Integer::intValue)
+                .sum();
+    }
+
+    private IntStream parseInput(final String input) {
+        return Arrays.stream(input.split("\n\n"))
+                .map(elf -> elf.lines().map(Integer::parseInt).toList())
+                .flatMapToInt(elf ->
+                        IntStream.of(elf.stream().mapToInt(Integer::intValue).sum()));
     }
 }
