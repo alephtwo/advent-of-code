@@ -35,7 +35,8 @@ defmodule Day07Test do
   end
 
   test "part 1 solution" do
-    assert Day07.part_one(@puzzle_input) > 1_377_938 # first wrong answer
+    # first wrong answer
+    assert Day07.part_one(@puzzle_input) > 1_377_938
     assert Day07.part_one(@puzzle_input) == :ok
   end
 
