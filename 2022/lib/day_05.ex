@@ -8,7 +8,7 @@ defmodule Day05 do
 
   @doc """
   """
-  @spec part_one(String.t()) :: number()
+  @spec part_one(String.t()) :: String.t()
   def part_one(input) do
     %{stacks: stacks, instructions: instructions} = parse_input(input)
 
@@ -20,7 +20,7 @@ defmodule Day05 do
 
   @doc """
   """
-  @spec part_two(String.t()) :: number()
+  @spec part_two(String.t()) :: String.t()
   def part_two(input) do
     %{stacks: stacks, instructions: instructions} = parse_input(input)
 
