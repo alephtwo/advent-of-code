@@ -23,13 +23,11 @@ defmodule Day08Test do
     assert Day08.part_one(@puzzle_input) == 1_669
   end
 
-  @tag :skip
   test "part 2 example" do
-    assert Day08.part_two(@sample_input) == :ok
+    assert Day08.part_two(@sample_input) == 8
   end
 
-  @tag :skip
   test "part 2 solution" do
-    assert Day08.part_two(@puzzle_input) == :ok
+    assert Day08.part_two(@puzzle_input) == 331_344
   end
 end
