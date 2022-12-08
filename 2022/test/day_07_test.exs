@@ -35,18 +35,14 @@ defmodule Day07Test do
   end
 
   test "part 1 solution" do
-    # first wrong answer
-    assert Day07.part_one(@puzzle_input) > 1_377_938
-    assert Day07.part_one(@puzzle_input) == :ok
+    assert Day07.part_one(@puzzle_input) == 1_444_896
   end
 
-  @tag :skip
   test "part 2 example" do
-    assert Day07.part_two(@sample_input) == :ok
+    assert Day07.part_two(@sample_input) == 24_933_642
   end
 
-  @tag :skip
   test "part 2 solution" do
-    assert Day07.part_two(@puzzle_input) == :ok
+    assert Day07.part_two(@puzzle_input) == 404_395
   end
 end
