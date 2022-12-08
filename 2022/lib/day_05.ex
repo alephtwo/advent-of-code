@@ -99,8 +99,7 @@ defmodule Day05 do
 
     instructions
     |> Enum.reduce(stacks, &process_instruction/2)
-    |> Enum.map(&Enum.at(&1, 0))
-    |> Enum.join()
+    |> Enum.map_join(&Enum.at(&1, 0))
   end
 
   @doc """
@@ -181,8 +180,7 @@ defmodule Day05 do
 
     instructions
     |> Enum.reduce(stacks, &process_instruction_enhanced/2)
-    |> Enum.map(&Enum.at(&1, 0))
-    |> Enum.join()
+    |> Enum.map_join(&Enum.at(&1, 0))
   end
 
   defp parse_input(input) do

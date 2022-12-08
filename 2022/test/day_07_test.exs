@@ -1,4 +1,7 @@
 defmodule Day07Test do
+  @moduledoc """
+  Tests for Day 7 of Advent of Code 2022.
+  """
   use ExUnit.Case
   doctest Day07
 
@@ -31,7 +34,7 @@ defmodule Day07Test do
   """
 
   test "part 1 example" do
-    assert Day07.part_one(@sample_input) == 95437
+    assert Day07.part_one(@sample_input) == 95_437
   end
 
   test "part 1 solution" do

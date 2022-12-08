@@ -4,11 +4,16 @@ defmodule Day07 do
   """
 
   defmodule State do
-    # represent the path as an array
+    @moduledoc """
+    Represents the current path and accumulated directory structure.
+    """
     defstruct path: [], structure: %{}
   end
 
   defmodule Directory do
+    @moduledoc """
+    Represents a given directory.
+    """
     defstruct bytes: 0, subfolders: []
   end
 
@@ -174,7 +179,7 @@ defmodule Day07 do
 
     sizes
     |> Enum.filter(fn {_, bytes} -> bytes >= needed_space end)
-    |> Enum.map(fn {path, size} -> size end)
+    |> Enum.map(fn {_, size} -> size end)
     |> Enum.min()
   end
 
@@ -216,7 +221,7 @@ defmodule Day07 do
   end
 
   defp ingest_line(line, state) do
-    [size, name] = String.split(line, " ")
+    [size, _name] = String.split(line, " ")
 
     structure =
       Map.update!(state.structure, state.path, fn d ->
