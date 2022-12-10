@@ -4,7 +4,12 @@ defmodule Day09 do
   """
 
   defmodule State do
-    defstruct tail_locations: [], head: {0, 0}, tail: {0, 0}
+    defstruct tail_locations: [],
+              head: {0, 0},
+              tail: {0, 0},
+              # start with the second knot, it's the first tail
+              knot: 2,
+              knots: 2
   end
 
   @doc """
@@ -45,10 +50,17 @@ defmodule Day09 do
 
     tail = catch_up(state.tail, head)
 
+    tail_locations =
+      if state.knot == state.knots do
+        [tail | state.tail_locations]
+      else
+        state.tail_locations
+      end
+
     %State{
       head: head,
       tail: tail,
-      tail_locations: [tail | state.tail_locations]
+      tail_locations: tail_locations
     }
   end
 
@@ -95,6 +107,7 @@ defmodule Day09 do
   def grid_distance({head_x, head_y}, {tail_x, tail_y}),
     do: {head_x - tail_x, head_y - tail_y}
 
+  @spec is_adjacent({number, number}, {number, number}) :: boolean
   def is_adjacent(head, tail) do
     {x, y} = grid_distance(head, tail)
     abs(x) <= 1 and abs(y) <= 1
