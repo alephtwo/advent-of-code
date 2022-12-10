@@ -57,13 +57,7 @@ defmodule Day09 do
       {0, 0} ->
         tail
 
-      {dx, dy} when dx == 1 and dy == 1 ->
-        tail
-
-      {dx, dy} when dx == 0 and abs(dy) == 1 ->
-        tail
-
-      {dx, dy} when abs(dx) == 1 and dy == 0 ->
+      {dx, dy} when abs(dx) == 1 and abs(dy) == 1 ->
         tail
 
       {0, 2} ->
@@ -89,6 +83,12 @@ defmodule Day09 do
 
       {dx, dy} when dx < 0 and dy < 0 ->
         {tail_x - 1, tail_y - 1}
+
+      {dx, dy} when dx == 0 and abs(dy) == 1 ->
+        tail
+
+      {dx, dy} when abs(dx) == 1 and dy == 0 ->
+        tail
     end
   end
 

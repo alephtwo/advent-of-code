@@ -32,7 +32,6 @@ defmodule Day09Test do
     assert Day09.part_one(@sample_input) == 13
   end
 
-  @tag :skip
   test "part 1 solution" do
     assert Day09.part_one(@puzzle_input) == :ok
   end
