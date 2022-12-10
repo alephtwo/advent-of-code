@@ -18,6 +18,16 @@ defmodule Day09Test do
   R 2
   """
 
+  test "adjacency" do
+    assert Day09.is_adjacent({0, 0}, {1, 1})
+    assert Day09.is_adjacent({0, 0}, {1, 0})
+    assert Day09.is_adjacent({0, 0}, {1, -1})
+    assert Day09.is_adjacent({0, 0}, {0, -1})
+    assert Day09.is_adjacent({0, 0}, {-1, -1})
+    assert Day09.is_adjacent({0, 0}, {-1, 0})
+    assert Day09.is_adjacent({0, 0}, {-1, 1})
+  end
+
   test "part 1 example" do
     assert Day09.part_one(@sample_input) == 13
   end
