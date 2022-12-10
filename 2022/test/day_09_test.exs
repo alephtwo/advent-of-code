@@ -29,22 +29,27 @@ defmodule Day09Test do
   U 20
   """
 
+  @tag :skip
   test "part 1 example" do
     assert Day09.part_one(@sample_input) == 13
   end
 
+  @tag :skip
   test "part 1 solution" do
     assert Day09.part_one(@puzzle_input) == 6_243
   end
 
+  @tag :skip
   test "part 2 example" do
     assert Day09.part_two(@sample_input) == 1
   end
 
+  @tag :skip
   test "part 2 example 2" do
     assert Day09.part_two(@longer_sample_input) == 36
   end
 
+  @tag :skip
   test "part 2 solution" do
     assert Day09.part_two(@puzzle_input) == :ok
   end
