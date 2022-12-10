@@ -8,10 +8,18 @@ defmodule Day09Test do
   @puzzle_input File.read!("priv/09.txt")
 
   @sample_input """
+  R 4
+  U 4
+  L 3
+  D 1
+  R 4
+  D 1
+  L 5
+  R 2
   """
 
   test "part 1 example" do
-    assert Day09.part_one(@sample_input) == :ok
+    assert Day09.part_one(@sample_input) == 13
   end
 
   @tag :skip

@@ -24,5 +24,9 @@ defmodule Day09 do
   defp parse_input(input) do
     input
     |> String.split("\n", trim: true)
+    |> Enum.map(fn s ->
+      [direction, amplitude] = String.split(s)
+      {direction, String.to_integer(amplitude)}
+    end)
   end
 end
