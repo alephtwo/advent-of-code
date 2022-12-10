@@ -170,18 +170,27 @@ defmodule Day10Test do
     assert Day10.part_one(@puzzle_input) == 10_760
   end
 
-  @tag :skip
   test "part 2 example" do
-    assert Day10.part_two(@sample_input) == :ok
+    assert Day10.part_two(@longer_sample_input) ==
+             """
+             ##..##..##..##..##..##..##..##..##..##..
+             ###...###...###...###...###...###...###.
+             ####....####....####....####....####....
+             #####.....#####.....#####.....#####.....
+             ######......######......######......####
+             #######.......#######.......#######.....
+             """
   end
 
-  @tag :skip
-  test "part 2 example 2" do
-    assert Day10.part_two(@longer_sample_input) == :ok
-  end
-
-  @tag :skip
   test "part 2 solution" do
-    assert Day10.part_two(@puzzle_input) == :ok
+    assert Day10.part_two(@puzzle_input) ==
+             """
+             ####.###...##..###..#..#.####..##..#..#.
+             #....#..#.#..#.#..#.#..#.#....#..#.#..#.
+             ###..#..#.#....#..#.####.###..#....####.
+             #....###..#.##.###..#..#.#....#.##.#..#.
+             #....#....#..#.#....#..#.#....#..#.#..#.
+             #....#.....###.#....#..#.#.....###.#..#.
+             """
   end
 end
