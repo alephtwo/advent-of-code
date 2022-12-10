@@ -18,6 +18,17 @@ defmodule Day09Test do
   R 2
   """
 
+  @longer_sample_input """
+  R 5
+  U 8
+  L 8
+  D 3
+  R 17
+  D 10
+  L 25
+  U 20
+  """
+
   test "adjacency" do
     assert Day09.is_adjacent({0, 0}, {1, 1})
     assert Day09.is_adjacent({0, 0}, {1, 0})
@@ -33,12 +44,15 @@ defmodule Day09Test do
   end
 
   test "part 1 solution" do
-    assert Day09.part_one(@puzzle_input) == :ok
+    assert Day09.part_one(@puzzle_input) == 6_243
   end
 
-  @tag :skip
   test "part 2 example" do
-    assert Day09.part_two(@sample_input) == :ok
+    assert Day09.part_two(@sample_input) == 1
+  end
+
+  test "part 2 example 2" do
+    assert Day09.part_two(@longer_sample_input) == 36
   end
 
   @tag :skip
