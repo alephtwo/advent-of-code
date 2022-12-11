@@ -8,12 +8,6 @@ defmodule Day10Test do
   @puzzle_input File.read!("priv/10.txt")
 
   @sample_input """
-  noop
-  addx 3
-  addx -5
-  """
-
-  @longer_sample_input """
   addx 15
   addx -11
   addx 6
@@ -164,7 +158,7 @@ defmodule Day10Test do
 
   @tag :skip
   test "part 1 example" do
-    assert Day10.part_one(@longer_sample_input) == 13_140
+    assert Day10.part_one(@sample_input) == 13_140
   end
 
   @tag :skip
@@ -174,7 +168,7 @@ defmodule Day10Test do
 
   @tag :skip
   test "part 2 example" do
-    assert Day10.part_two(@longer_sample_input) ==
+    assert Day10.part_two(@sample_input) ==
              """
              ##..##..##..##..##..##..##..##..##..##..
              ###...###...###...###...###...###...###.
