@@ -4,7 +4,7 @@ defmodule Day11 do
   """
 
   defmodule Monkey do
-    defstruct [:number, :items, :operation, :test, :if_true, :if_false, items_inspected: 0]
+    defstruct [:number, :items, :operation, :divisor, :if_true, :if_false, items_inspected: 0]
   end
 
   # big ups to rosetta code for this one
@@ -19,7 +19,7 @@ defmodule Day11 do
   @monkey_regex ~r/^Monkey (\d+):$/
   @starting_items_regex ~r/^  Starting items: (.*)$/
   @operation_regex ~r/^  Operation: new = old (.*)$/
-  @test_regex ~r/^  Test: divisible by (\d+)$/
+  @divisor_regex ~r/^  Test: divisible by (\d+)$/
   @if_true_regex ~r/^    If true: throw to monkey (\d+)$/
   @if_false_regex ~r/^    If false: throw to monkey (\d+)$/
 
@@ -93,7 +93,7 @@ defmodule Day11 do
       end
 
     # where next?
-    next_monkey = if monkey.test.(worry), do: monkey.if_true, else: monkey.if_false
+    next_monkey = if rem(worry, monkey.divisor) == 0, do: monkey.if_true, else: monkey.if_false
 
     new_monkeys =
       monkeys
@@ -137,12 +137,11 @@ defmodule Day11 do
       |> String.split(" ")
       |> parse_operation()
 
-    test =
-      @test_regex
+    divisor =
+      @divisor_regex
       |> Regex.run(Enum.at(lines, 3))
       |> then(fn [_, divisor] -> divisor end)
       |> String.to_integer()
-      |> then(fn divisor -> fn n -> rem(n, divisor) == 0 end end)
 
     if_true =
       @if_true_regex
@@ -159,7 +158,7 @@ defmodule Day11 do
        number: number,
        items: starting_items,
        operation: operation,
-       test: test,
+       divisor: divisor,
        if_true: if_true,
        if_false: if_false
      }}
