@@ -464,5 +464,5 @@ defmodule Day10 do
     :noop
   end
 
-  defp print_crt(crt), do: crt |> Enum.map(&Enum.join(&1)) |> Enum.join("\n")
+  defp print_crt(crt), do: Enum.map_join(crt, "\n", &Enum.join(&1))
 end

@@ -7,18 +7,14 @@ defmodule Day12 do
   """
   @spec part_one(String.t()) :: number()
   def part_one(input) do
-    input
-    |> parse_input()
-    |> IO.inspect()
+    parse_input(input)
   end
 
   @doc """
   """
   @spec part_two(String.t()) :: number()
   def part_two(input) do
-    input
-    |> parse_input()
-    |> IO.inspect()
+    parse_input(input)
   end
 
   defp parse_input(input) do

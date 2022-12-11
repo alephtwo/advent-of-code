@@ -4,6 +4,9 @@ defmodule Day09 do
   """
 
   defmodule State do
+    @moduledoc """
+    Represents the state of the major reducer logic.
+    """
     defstruct [:current_coords, :visited_coords]
   end
 
@@ -820,6 +823,8 @@ defmodule Day09 do
     %State{state | current_coords: new_positions, visited_coords: new_visited_coords}
   end
 
+  # I simply choose not to care about cyclomatic complexity for this garbage
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   defp catch_up(tail = {tail_x, tail_y}, head) do
     case grid_distance(head, tail) do
       {0, 0} ->

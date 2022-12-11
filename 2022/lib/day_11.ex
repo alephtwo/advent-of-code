@@ -4,6 +4,9 @@ defmodule Day11 do
   """
 
   defmodule Monkey do
+    @moduledoc """
+    Represents a single monkey.
+    """
     defstruct [:number, :items, :operation, :divisor, :if_true, :if_false, items_inspected: 0]
   end
 
