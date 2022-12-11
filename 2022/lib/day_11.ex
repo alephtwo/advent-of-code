@@ -7,15 +7,6 @@ defmodule Day11 do
     defstruct [:number, :items, :operation, :divisor, :if_true, :if_false, items_inspected: 0]
   end
 
-  # big ups to rosetta code for this one
-  defmodule Prime do
-    def decomposition(n), do: decomposition(n, 2, [])
-
-    defp decomposition(n, k, acc) when n < k * k, do: Enum.reverse(acc, [n])
-    defp decomposition(n, k, acc) when rem(n, k) == 0, do: decomposition(div(n, k), k, [k | acc])
-    defp decomposition(n, k, acc), do: decomposition(n, k + 1, acc)
-  end
-
   @monkey_regex ~r/^Monkey (\d+):$/
   @starting_items_regex ~r/^  Starting items: (.*)$/
   @operation_regex ~r/^  Operation: new = old (.*)$/
@@ -31,7 +22,7 @@ defmodule Day11 do
 
     # rounds
     1..20
-    |> Enum.reduce(%{monkeys: monkeys, calm_down: true}, &execute_round/2)
+    |> Enum.reduce(%{monkeys: monkeys, calm_down: true, mod: nil}, &execute_round/2)
     |> then(fn %{monkeys: monkeys, calm_down: _} -> monkeys end)
     |> Map.values()
     |> Enum.map(fn %Monkey{items_inspected: i} -> i end)
@@ -47,9 +38,16 @@ defmodule Day11 do
   def part_two(input) do
     monkeys = parse_input(input)
 
+    mod =
+      monkeys
+      |> Map.values()
+      |> Enum.map(fn m -> m.divisor end)
+      # lcm of distinct primes is its product
+      |> Enum.product()
+
     # rounds
     1..10_000
-    |> Enum.reduce(%{monkeys: monkeys, calm_down: false}, &execute_round/2)
+    |> Enum.reduce(%{monkeys: monkeys, calm_down: false, mod: mod}, &execute_round/2)
     |> then(fn %{monkeys: monkeys, calm_down: _} -> monkeys end)
     |> Map.values()
     |> Enum.map(fn %Monkey{items_inspected: i} -> i end)
@@ -59,14 +57,14 @@ defmodule Day11 do
     |> Enum.product()
   end
 
-  defp execute_round(_round, state = %{monkeys: monkeys, calm_down: _}) do
+  defp execute_round(_round, state = %{monkeys: monkeys, calm_down: _, mod: _}) do
     # each monkey takes a turn
     monkeys
     |> Map.keys()
     |> Enum.reduce(state, &take_monkey_turn/2)
   end
 
-  defp take_monkey_turn(number, state = %{monkeys: monkeys, calm_down: calm_down}) do
+  defp take_monkey_turn(number, state = %{monkeys: monkeys, calm_down: calm_down, mod: mod}) do
     # we need to grab the monkey out of the state so that it is up to date
     # with the latest information
     monkey = Map.get(monkeys, number)
@@ -77,19 +75,25 @@ defmodule Day11 do
       # we probably don't need to pass the monkey as context but it will
       # make lookups and operations much faster if we don't have to search
       # for the monkey with the particular item
-      |> Enum.reduce(%{monkey: monkey, monkeys: monkeys, calm_down: calm_down}, &inspect_item/2)
+      |> Enum.reduce(
+        %{monkey: monkey, monkeys: monkeys, calm_down: calm_down, mod: mod},
+        &inspect_item/2
+      )
       # we can throw the monkey away as it was just context
       |> then(fn %{monkey: _, monkeys: monkeys} -> monkeys end)
 
     %{state | monkeys: new_monkeys}
   end
 
-  defp inspect_item(item, state = %{monkey: monkey, monkeys: monkeys, calm_down: calm_down}) do
+  defp inspect_item(
+         item,
+         state = %{monkey: monkey, monkeys: monkeys, calm_down: calm_down, mod: mod}
+       ) do
     worry =
       if calm_down do
         item |> monkey.operation.() |> div(3)
       else
-        monkey.operation.(item)
+        monkey.operation.(item) |> rem(mod)
       end
 
     # where next?

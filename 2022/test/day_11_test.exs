@@ -45,13 +45,11 @@ defmodule Day11Test do
     assert Day11.part_one(@puzzle_input) == 69_918
   end
 
-  @tag :skip
   test "part 2 example" do
     assert Day11.part_two(@sample_input) == 2_713_310_158
   end
 
-  @tag :skip
   test "part 2 solution" do
-    assert Day11.part_two(@puzzle_input) == :ok
+    assert Day11.part_two(@puzzle_input) == 19_573_408_701
   end
 end
