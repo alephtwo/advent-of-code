@@ -8,6 +8,11 @@ defmodule Day12Test do
   @puzzle_input File.read!("priv/12.txt")
 
   @sample_input """
+  Sabqponm
+  abcryxxl
+  accszExk
+  acctuvwj
+  abdefghi
   """
 
   test "part 1 example" do
