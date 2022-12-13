@@ -23,6 +23,8 @@ defmodule Day13 do
 
   defp parse_input(input) do
     input
-    |> String.split("\n", trim: true)
+    |> String.split("\n\n", trim: true)
+    |> Enum.map(&String.split(&1, "\n", trim: true))
+    |> Enum.map(fn [a, b] -> {a, b} end)
   end
 end
