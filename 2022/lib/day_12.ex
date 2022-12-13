@@ -8,9 +8,13 @@ defmodule Day12 do
   @spec part_one(String.t()) :: number()
   def part_one(input) do
     grid = parse_input(input)
+    graph = build_graph(grid)
     %{"S" => start, "E" => goal} = identify_key_locations(grid)
 
-    pathfind(grid, start, goal, [])
+    graph
+    |> Graph.dijkstra(start, goal)
+    # ignore the start
+    |> List.delete_at(0)
     |> Enum.count()
   end
 
@@ -18,7 +22,24 @@ defmodule Day12 do
   """
   @spec part_two(String.t()) :: number()
   def part_two(input) do
-    _grid = parse_input(input)
+    grid = parse_input(input)
+
+    entrances =
+      grid
+      |> Enum.filter(fn {_, v} -> v == "S" or v == "a" end)
+      |> Enum.map(fn {p, _} -> p end)
+
+    %{"S" => _, "E" => goal} = identify_key_locations(grid)
+
+    graph = build_graph(grid)
+
+    entrances
+    |> Enum.map(fn p -> graph |> Graph.dijkstra(p, goal) end)
+    # ignore dead ends
+    |> Enum.filter(fn p -> p != nil end)
+    # ignore the starting point
+    |> Enum.map(fn p -> Enum.count(p) - 1 end)
+    |> Enum.min()
   end
 
   defp parse_input(input) do
@@ -34,40 +55,6 @@ defmodule Day12 do
     |> Map.new()
   end
 
-  # this pathfinding is massively inefficient for large data sets
-  # parallelizing it is a hack and definitely a sign that something is very
-  defp pathfind(_grid, current, goal, path) when current == goal, do: path
-
-  defp pathfind(grid, current = {cx, cy}, goal, path) do
-    <<current_height::utf8>> = gauge_height(grid, current)
-
-    possible_next_steps =
-      grid
-      # four cardinal directions - will only return values that exist in the map
-      |> Map.take([{cx + 1, cy}, {cx - 1, cy}, {cx, cy + 1}, {cx, cy - 1}])
-      |> Enum.filter(fn {p, h} ->
-        # don't go backwards
-        seen = !Enum.member?(path, p)
-        # can only go one up or down in height
-        <<height::utf8>> = gauge_height(h)
-        seen and abs(height - current_height) <= 1
-      end)
-      |> Enum.map(fn {p, _} -> p end)
-
-    # Fan out to each of them and see how it goes...
-    forks =
-      possible_next_steps
-      |> Enum.map(&pathfind(grid, &1, goal, [&1 | path]))
-      |> Enum.filter(fn path -> path != :dead_end end)
-
-    if Enum.empty?(forks) do
-      # this is a bad end
-      :dead_end
-    else
-      Enum.min_by(forks, fn path -> Enum.count(path) end)
-    end
-  end
-
   @key_locations ["S", "E"]
   defp identify_key_locations(grid) do
     grid
@@ -77,13 +64,33 @@ defmodule Day12 do
     |> Map.new()
   end
 
-  defp gauge_height(grid, point), do: gauge_height(Map.get(grid, point))
+  defp build_graph(grid) do
+    points = Enum.map(grid, fn {p, _} -> p end)
 
-  defp gauge_height(value) do
+    result =
+      Graph.new()
+      |> Graph.add_vertices(points)
+
+    Enum.reduce(grid, result, fn {{x, y}, height}, graph ->
+      viable_next_steps =
+        grid
+        # look in all directions - won't include points off the grid
+        |> Map.take([{x + 1, y}, {x - 1, y}, {x, y + 1}, {x, y - 1}])
+        # only select points we can actually travel to by height rules
+        |> Enum.filter(fn {_, h} -> is_viable(normalize_height(height), normalize_height(h)) end)
+        |> Enum.map(fn {p, _} -> {{x, y}, p} end)
+
+      Graph.add_edges(graph, viable_next_steps)
+    end)
+  end
+
+  defp normalize_height(value) do
     case value do
       "S" -> "a"
       "E" -> "z"
       c -> c
     end
   end
+
+  defp is_viable(<<start::utf8>>, <<finish::utf8>>), do: finish - start <= 1
 end

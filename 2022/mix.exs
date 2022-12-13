@@ -20,6 +20,7 @@ defmodule AdventOfCode2022.MixProject do
   defp deps do
     [
       {:benchee, "~> 1.1"},
+      {:libgraph, "~> 0.16.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.29.1", only: [:dev], runtime: false}

@@ -156,14 +156,17 @@ defmodule Day10Test do
   noop
   """
 
+  @tag :skip
   test "part 1 example" do
     assert Day10.part_one(@sample_input) == 13_140
   end
 
+  @tag :skip
   test "part 1 solution" do
     assert Day10.part_one(@puzzle_input) == 10_760
   end
 
+  @tag :skip
   test "part 2 example" do
     assert Day10.part_two(@sample_input) ==
              """
@@ -176,6 +179,7 @@ defmodule Day10Test do
              """
   end
 
+  @tag :skip
   test "part 2 solution" do
     assert Day10.part_two(@puzzle_input) ==
              """
