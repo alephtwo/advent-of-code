@@ -15,19 +15,23 @@ defmodule Day12Test do
   abdefghi
   """
 
+  @tag :skip
   test "part 1 example" do
     assert Day12.part_one(@sample_input) == 31
   end
 
+  @tag :skip
   test "part 1 solution" do
     assert Day12.part_one(@puzzle_input) == 361
   end
 
+  @tag :skip
   test "part 2 example" do
     assert Day12.part_two(@sample_input) == 29
   end
 
+  @tag :skip
   test "part 2 solution" do
-    assert Day12.part_two(@puzzle_input) == :ok
+    assert Day12.part_two(@puzzle_input) == 354
   end
 end
