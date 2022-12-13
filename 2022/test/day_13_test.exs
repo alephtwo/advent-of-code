@@ -34,7 +34,7 @@ defmodule Day13Test do
   """
 
   test "part 1 example" do
-    assert Day13.part_one(@sample_input) == :ok
+    assert Day13.part_one(@sample_input) == 13
   end
 
   @tag :skip
