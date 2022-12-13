@@ -16,10 +16,9 @@ defmodule Day12Test do
   """
 
   test "part 1 example" do
-    assert Day12.part_one(@sample_input) == :ok
+    assert Day12.part_one(@sample_input) == 31
   end
 
-  @tag :skip
   test "part 1 solution" do
     assert Day12.part_one(@puzzle_input) == :ok
   end
