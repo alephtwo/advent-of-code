@@ -24,10 +24,17 @@ defmodule Day14 do
 
   @doc """
   """
+  @padding 150
   @spec part_two(String.t()) :: number()
   def part_two(input) do
     lines = parse_input(input)
-    {left, right} = find_left_right(lines)
+
+    {left, right} =
+      lines
+      |> find_left_right()
+      # uhh just add some padding on either side, scuffed but it works
+      |> then(fn {l, r} -> {l - @padding, r + @padding} end)
+
     bottom = find_bottom(lines)
 
     horizontal = fn y, type ->
@@ -36,12 +43,14 @@ defmodule Day14 do
       |> Map.new()
     end
 
-    cave =
+    empty_cave =
       build_empty_matrix(left, right, bottom)
       # draw a horizontal line of air at bottom + 1
       |> Map.merge(horizontal.(bottom + 1, :air))
       # draw a horizontal line of rock at bottom + 2
       |> Map.merge(horizontal.(bottom + 2, :rock))
+
+    cave = Enum.reduce(lines, empty_cave, &draw_line/2)
 
     cave
     |> drop_sand_with_bottom()
@@ -168,5 +177,36 @@ defmodule Day14 do
   # horizontal lines
   defp draw_line([{x1, y}, {x2, y}], matrix) do
     Enum.reduce(x1..x2, matrix, fn x, m -> Map.put(m, {x, y}, :rock) end)
+  end
+
+  defp print_cave(cave) do
+    coords = Map.keys(cave)
+
+    {min_x, max_x} =
+      coords
+      |> Enum.map(fn {x, _} -> x end)
+      |> Enum.min_max()
+
+    {min_y, max_y} =
+      coords
+      |> Enum.map(fn {_, y} -> y end)
+      |> Enum.min_max()
+
+    Enum.each(min_y..max_y, fn y ->
+      Enum.each(min_x..max_x, fn x ->
+        char =
+          case Map.get(cave, {x, y}) do
+            :air -> "."
+            :rock -> "#"
+            :sand -> "o"
+          end
+
+        IO.write(char)
+      end)
+
+      IO.puts("")
+    end)
+
+    cave
   end
 end
