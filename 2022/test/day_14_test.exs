@@ -8,6 +8,8 @@ defmodule Day14Test do
   @puzzle_input File.read!("priv/14.txt")
 
   @sample_input """
+  498,4 -> 498,6 -> 496,6
+  503,4 -> 502,4 -> 502,9 -> 494,9
   """
 
   test "part 1 example" do
