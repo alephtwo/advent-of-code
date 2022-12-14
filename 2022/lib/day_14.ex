@@ -10,10 +10,14 @@ defmodule Day14 do
     lines = parse_input(input)
     {left, right} = find_left_right(lines)
     bottom = find_bottom(lines)
+    cave = Enum.reduce(lines, build_empty_matrix(left, right, bottom), &draw_line/2)
 
-    cave = Enum.reduce(lines,  build_empty_matrix(left, right, bottom), &draw_line/2)
-
-    drop_sand(cave)
+    cave
+    |> drop_sand()
+    |> IO.inspect(limit: :infinity)
+    |> Map.values()
+    |> Enum.filter(fn c -> c == :sand end)
+    |> Enum.count()
   end
 
   @doc """
@@ -25,8 +29,32 @@ defmodule Day14 do
     |> IO.inspect()
   end
 
-  defp drop_sand(cave) do
-    cave
+  @drop_sand_at 500
+  defp drop_sand(cave), do: simulate_drop(cave, {@drop_sand_at, 0})
+
+  defp simulate_drop(cave, {x, y}) do
+    down = {x, y + 1}
+    down_left = {x - 1, y + 1}
+    down_right = {x + 1, y + 1}
+
+    cond do
+      # if we're off the map, then we're done
+      !Map.has_key?(cave, {x, y}) ->
+        cave
+
+      Map.get(cave, down) == :air ->
+        simulate_drop(cave, down)
+
+      Map.get(cave, down_left) == :air ->
+        simulate_drop(cave, down_left)
+
+      Map.get(cave, down_right) == :air ->
+        simulate_drop(cave, down_right)
+
+      # come to a stop
+      true ->
+        Map.put(cave, {x, y}, :sand)
+    end
   end
 
   defp parse_input(input) do
@@ -62,7 +90,7 @@ defmodule Day14 do
   end
 
   defp build_empty_matrix(left, right, bottom) do
-    1..bottom
+    0..bottom
     |> Enum.flat_map(fn y -> Enum.map(left..right, fn x -> {{x, y}, :air} end) end)
     |> Map.new()
   end
