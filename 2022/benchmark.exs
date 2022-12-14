@@ -11,6 +11,7 @@ files = %{
   10 => File.read!("priv/10.txt"),
   11 => File.read!("priv/11.txt"),
   12 => File.read!("priv/12.txt"),
+  13 => File.read!("priv/13.txt"),
 }
 
 Benchee.run(%{
@@ -38,4 +39,6 @@ Benchee.run(%{
   # "day 11 part two" => fn -> Day11.part_two(Map.get(files, 11)) end,
   "day 12 part one" => fn -> Day12.part_one(Map.get(files, 12)) end,
   "day 12 part two" => fn -> Day12.part_two(Map.get(files, 12)) end,
+  "day 13 part one" => fn -> Day13.part_one(Map.get(files, 13)) end,
+  "day 13 part two" => fn -> Day13.part_two(Map.get(files, 13)) end,
 })
