@@ -10,11 +10,12 @@ defmodule Day14 do
     lines = parse_input(input)
     {left, right} = find_left_right(lines)
     bottom = find_bottom(lines)
-    cave = Enum.reduce(lines, build_empty_matrix(left, right, bottom), &draw_line/2)
+    empty_cave = build_empty_matrix(left, right, bottom)
+    cave = Enum.reduce(lines, empty_cave, &draw_line/2)
 
     cave
     |> drop_sand()
-    |> IO.inspect(limit: :infinity)
+    |> then(fn {:ok, c} -> c end)
     |> Map.values()
     |> Enum.filter(fn c -> c == :sand end)
     |> Enum.count()
@@ -30,7 +31,14 @@ defmodule Day14 do
   end
 
   @drop_sand_at 500
-  defp drop_sand(cave), do: simulate_drop(cave, {@drop_sand_at, 0})
+  defp drop_sand(cave) do
+    case simulate_drop(cave, {@drop_sand_at, 0}) do
+      # if this drop goes off the map we just need to return the existing cave
+      :rollback -> {:ok, cave}
+      # otherwise just keep going
+      {:continue, next} -> drop_sand(next)
+    end
+  end
 
   defp simulate_drop(cave, {x, y}) do
     down = {x, y + 1}
@@ -38,22 +46,30 @@ defmodule Day14 do
     down_right = {x + 1, y + 1}
 
     cond do
-      # if we're off the map, then we're done
-      !Map.has_key?(cave, {x, y}) ->
-        cave
+      # look down
+      !Map.has_key?(cave, down) ->
+        :rollback
 
       Map.get(cave, down) == :air ->
         simulate_drop(cave, down)
 
+      # look down left
+      !Map.has_key?(cave, down_left) ->
+        :rollback
+
       Map.get(cave, down_left) == :air ->
         simulate_drop(cave, down_left)
+
+      # look down right
+      !Map.has_key?(cave, down_right) ->
+        :rollback
 
       Map.get(cave, down_right) == :air ->
         simulate_drop(cave, down_right)
 
       # come to a stop
       true ->
-        Map.put(cave, {x, y}, :sand)
+        {:continue, Map.put(cave, {x, y}, :sand)}
     end
   end
 
