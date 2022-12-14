@@ -2,6 +2,7 @@ defmodule Day14 do
   @moduledoc """
   Day 14 of Advent of Code 2022.
   """
+  @source {500, 0}
 
   @doc """
   """
@@ -25,14 +26,32 @@ defmodule Day14 do
   """
   @spec part_two(String.t()) :: number()
   def part_two(input) do
-    input
-    |> parse_input()
-    |> IO.inspect()
+    lines = parse_input(input)
+    {left, right} = find_left_right(lines)
+    bottom = find_bottom(lines)
+
+    horizontal = fn y, type ->
+      left..right
+      |> Enum.map(fn x -> {{x, y}, type} end)
+      |> Map.new()
+    end
+
+    cave =
+      build_empty_matrix(left, right, bottom)
+      # draw a horizontal line of air at bottom + 1
+      |> Map.merge(horizontal.(bottom + 1, :air))
+      # draw a horizontal line of rock at bottom + 2
+      |> Map.merge(horizontal.(bottom + 2, :rock))
+
+    cave
+    |> drop_sand_with_bottom()
+    |> Map.values()
+    |> Enum.filter(fn x -> x == :sand end)
+    |> Enum.count()
   end
 
-  @drop_sand_at 500
   defp drop_sand(cave) do
-    case simulate_drop(cave, {@drop_sand_at, 0}) do
+    case simulate_drop(cave, @source) do
       # if this drop goes off the map we just need to return the existing cave
       :rollback -> {:ok, cave}
       # otherwise just keep going
@@ -70,6 +89,36 @@ defmodule Day14 do
       # come to a stop
       true ->
         {:continue, Map.put(cave, {x, y}, :sand)}
+    end
+  end
+
+  defp drop_sand_with_bottom(cave) do
+    if Map.get(cave, @source) == :sand do
+      cave
+    else
+      cave
+      |> simulate_drop_with_bottom(@source)
+      |> drop_sand_with_bottom()
+    end
+  end
+
+  defp simulate_drop_with_bottom(cave, {x, y}) do
+    down = {x, y + 1}
+    down_left = {x - 1, y + 1}
+    down_right = {x + 1, y + 1}
+
+    cond do
+      Map.get(cave, down) == :air ->
+        simulate_drop_with_bottom(cave, down)
+
+      Map.get(cave, down_left) == :air ->
+        simulate_drop_with_bottom(cave, down_left)
+
+      Map.get(cave, down_right) == :air ->
+        simulate_drop_with_bottom(cave, down_right)
+
+      true ->
+        Map.put(cave, {x, y}, :sand)
     end
   end
 
