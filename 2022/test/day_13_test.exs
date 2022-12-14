@@ -33,18 +33,22 @@ defmodule Day13Test do
   [1,[2,[3,[4,[5,6,0]]]],8,9]
   """
 
+  @tag :skip
   test "part 1 example" do
     assert Day13.part_one(@sample_input) == 13
   end
 
+  @tag :skip
   test "part 1 solution" do
     assert Day13.part_one(@puzzle_input) == 6_369
   end
 
+  @tag :skip
   test "part 2 example" do
     assert Day13.part_two(@sample_input) == 140
   end
 
+  @tag :skip
   test "part 2 solution" do
     assert Day13.part_two(@puzzle_input) == 25_800
   end
