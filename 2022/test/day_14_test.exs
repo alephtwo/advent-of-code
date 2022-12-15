@@ -12,18 +12,22 @@ defmodule Day14Test do
   503,4 -> 502,4 -> 502,9 -> 494,9
   """
 
+  @tag :skip
   test "part 1 example" do
     assert Day14.part_one(@sample_input) == 24
   end
 
+  @tag :skip
   test "part 1 solution" do
     assert Day14.part_one(@puzzle_input) == 610
   end
 
+  @tag :skip
   test "part 2 example" do
     assert Day14.part_two(@sample_input) == 93
   end
 
+  @tag :skip
   test "part 2 solution" do
     assert Day14.part_two(@puzzle_input) == 27_194
   end
