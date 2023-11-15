@@ -1,3 +1,10 @@
+# 2023
+/2023/_build/
+/2023/cover/
+/2023/deps/
+/2023/doc/
+/2023/erl_crash.dump
+
 # 2022
 /2022/_build/
 /2022/cover/
