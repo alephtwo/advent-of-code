@@ -1,3 +1,5 @@
+/.vscode
+
 # 2023
 /2023/_build/
 /2023/cover/
@@ -46,3 +48,6 @@
 /2017/deps/
 /2017/doc/
 /2017/erl_crash.dump
+
+# 2015
+/2015/target
