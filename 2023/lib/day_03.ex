@@ -31,8 +31,29 @@ defmodule AdventOfCode2023.Day03 do
   """
   def part_two(input) do
     lines = parse_lines(input)
-    _schematic = build_schematic(lines)
-    _numbers = scan_for_numbers(lines)
+    schematic = build_schematic(lines)
+
+    numbers = scan_for_numbers(lines)
+    gears = locate_gears(schematic)
+
+    gears
+    |> Enum.map(fn {x, y} ->
+      # find numbers that are adjacent to this point
+      adjacent_numbers =
+        Enum.filter(numbers, fn number ->
+          x >= number.x_min - 1 &&
+            x <= number.x_max + 1 &&
+            y >= number.y - 1 &&
+            y <= number.y + 1
+        end)
+
+      {{x, y}, adjacent_numbers}
+    end)
+    |> Enum.filter(fn {_, numbers} -> Enum.count(numbers) == 2 end)
+    |> Enum.map(fn {_, [%ContiguousNumber{value: v1}, %ContiguousNumber{value: v2}]} ->
+      v1 * v2
+    end)
+    |> Enum.sum()
   end
 
   defp parse_lines(input) do
@@ -103,5 +124,11 @@ defmodule AdventOfCode2023.Day03 do
       :error -> true
       _ -> false
     end
+  end
+
+  defp locate_gears(schematic = %Schematic{}) do
+    schematic.contents
+    |> Enum.filter(fn {_, value} -> value == "*" end)
+    |> Enum.map(fn {point, _} -> point end)
   end
 end
