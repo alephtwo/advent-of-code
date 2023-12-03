@@ -23,13 +23,11 @@ defmodule AdventOfCode2023.Day03Test do
   end
 
   test "part 1 solution" do
-    assert Day03.part_one(@puzzle_input) != 532_460
-    assert Day03.part_one(@puzzle_input) == nil
+    assert Day03.part_one(@puzzle_input) == 527_369
   end
 
-  @tag :skip
   test "part 2 example" do
-    assert Day03.part_two(@sample_input) == nil
+    assert Day03.part_two(@sample_input) == 467_835
   end
 
   @tag :skip

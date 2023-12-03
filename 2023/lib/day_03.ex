@@ -77,7 +77,7 @@ defmodule AdventOfCode2023.Day03 do
               value: line |> String.slice(start, length) |> Integer.parse() |> elem(0),
               y: y,
               x_min: start,
-              x_max: start + length
+              x_max: start + length - 1
             }
           end)
       end
