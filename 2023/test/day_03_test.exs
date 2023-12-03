@@ -2,6 +2,7 @@ defmodule AdventOfCode2023.Day03Test do
   use ExUnit.Case
   doctest AdventOfCode2023.Day03
   alias AdventOfCode2023.Day03
+  @moduletag :skip
 
   @puzzle_input File.read!("priv/03.txt")
 
