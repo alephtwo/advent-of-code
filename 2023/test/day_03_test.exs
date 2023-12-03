@@ -6,14 +6,24 @@ defmodule AdventOfCode2023.Day03Test do
   @puzzle_input File.read!("priv/03.txt")
 
   @sample_input """
+  467..114..
+  ...*......
+  ..35..633.
+  ......#...
+  617*......
+  .....+.58.
+  ..592.....
+  ......755.
+  ...$.*....
+  .664.598..
   """
 
   test "part 1 example" do
-    assert Day03.part_one(@sample_input) == nil
+    assert Day03.part_one(@sample_input) == 4_361
   end
 
-  @tag :skip
   test "part 1 solution" do
+    assert Day03.part_one(@puzzle_input) != 532_460
     assert Day03.part_one(@puzzle_input) == nil
   end
 
