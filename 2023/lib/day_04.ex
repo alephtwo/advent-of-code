@@ -23,15 +23,12 @@ defmodule AdventOfCode2023.Day04 do
   def part_two(input) do
     cards = parse_input(input)
 
-    card_values =
-      cards
-      |> Enum.map(fn c -> {c.number, count_winners(c)} end)
-      |> Map.new()
+    card_values = cards |> Enum.map(fn c -> {c.number, count_winners(c)} end) |> Map.new()
+    # start with one card of each in the deck
+    card_counts = cards |> Enum.map(fn c -> {c.number, 1} end) |> Map.new()
 
-    deck = Enum.map(cards, fn c -> c.number end)
-
-    final = play_deck(deck, deck, card_values)
-    Enum.count(final)
+    final = play_deck(1, card_counts, card_values)
+    final |> Map.values() |> Enum.sum()
   end
 
   defp parse_input(input) do
@@ -69,17 +66,33 @@ defmodule AdventOfCode2023.Day04 do
     chosen |> MapSet.intersection(winning) |> Enum.count()
   end
 
-  defp play_deck([], deck, _), do: deck
+  defp play_deck(n, counts, _) when n > map_size(counts), do: counts
 
-  defp play_deck([card | remaining], deck, card_values) do
-    amount_won = Map.get(card_values, card)
+  defp play_deck(card_number, card_counts, card_values) do
+    # how many cards does this card get us
+    winners = Map.get(card_values, card_number)
 
-    cards_won =
-      case amount_won do
-        0 -> []
-        n -> Enum.to_list((card + 1)..(card + n))
+    # which cards do those represent?
+    new_card_counts =
+      case winners do
+        # we didn't win any new cards
+        0 ->
+          card_counts
+
+        # we won some new cards, add them to the counts
+        n ->
+          # this is the range of cards that we won
+          counts_to_update =
+            (card_number + 1)..(card_number + n)
+            # for each of those cards, add the count of the current card to it
+            |> Enum.map(fn i ->
+              {i, Map.get(card_counts, i) + Map.get(card_counts, card_number)}
+            end)
+            |> Map.new()
+
+          Map.merge(card_counts, counts_to_update)
       end
 
-    play_deck(Enum.concat(remaining, cards_won), Enum.concat(deck, cards_won), card_values)
+    play_deck(card_number + 1, new_card_counts, card_values)
   end
 end

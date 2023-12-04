@@ -27,6 +27,6 @@ defmodule AdventOfCode2023.Day04Test do
   end
 
   test "part 2 solution" do
-    assert Day04.part_two(@puzzle_input) == nil
+    assert Day04.part_two(@puzzle_input) == 6_874_754
   end
 end
