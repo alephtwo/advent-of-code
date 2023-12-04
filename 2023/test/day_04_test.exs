@@ -22,12 +22,10 @@ defmodule AdventOfCode2023.Day04Test do
     assert Day04.part_one(@puzzle_input) == 21_088
   end
 
-  @tag :skip
   test "part 2 example" do
-    assert Day04.part_two(@sample_input) == nil
+    assert Day04.part_two(@sample_input) == 30
   end
 
-  @tag :skip
   test "part 2 solution" do
     assert Day04.part_two(@puzzle_input) == nil
   end

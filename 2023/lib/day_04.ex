@@ -21,8 +21,17 @@ defmodule AdventOfCode2023.Day04 do
   @doc """
   """
   def part_two(input) do
-    input
-    |> parse_input()
+    cards = parse_input(input)
+
+    card_values =
+      cards
+      |> Enum.map(fn c -> {c.number, count_winners(c)} end)
+      |> Map.new()
+
+    deck = Enum.map(cards, fn c -> c.number end)
+
+    final = play_deck(deck, deck, card_values)
+    Enum.count(final)
   end
 
   defp parse_input(input) do
@@ -48,14 +57,29 @@ defmodule AdventOfCode2023.Day04 do
   end
 
   defp score_card(card = %Card{}) do
-    chosen = MapSet.new(card.chosen_numbers)
-    winning = MapSet.new(card.winning_numbers)
-
-    winners = MapSet.intersection(chosen, winning)
-
-    case Enum.count(winners) do
+    case count_winners(card) do
       0 -> 0
       n -> 2 ** (n - 1)
     end
+  end
+
+  defp count_winners(card = %Card{}) do
+    chosen = MapSet.new(card.chosen_numbers)
+    winning = MapSet.new(card.winning_numbers)
+    chosen |> MapSet.intersection(winning) |> Enum.count()
+  end
+
+  defp play_deck([], deck, _), do: deck
+
+  defp play_deck([card | remaining], deck, card_values) do
+    amount_won = Map.get(card_values, card)
+
+    cards_won =
+      case amount_won do
+        0 -> []
+        n -> Enum.to_list((card + 1)..(card + n))
+      end
+
+    play_deck(Enum.concat(remaining, cards_won), Enum.concat(deck, cards_won), card_values)
   end
 end
