@@ -13,19 +13,23 @@ defmodule AdventOfCode2023.Day05 do
               humidity_to_location: nil
   end
 
+  defmodule AlmanacMapping do
+    defstruct start: nil, end: nil, offset: nil
+  end
+
   @doc """
   """
   def part_one(input) do
     almanac = parse_input(input)
 
     almanac.seeds
-    |> Enum.map(fn seed -> Map.get(almanac.seed_to_soil, seed, seed) end)
-    |> Enum.map(fn soil -> Map.get(almanac.soil_to_fertilizer, soil, soil) end)
-    |> Enum.map(fn fertilizer -> Map.get(almanac.fertilizer_to_water, fertilizer, fertilizer) end)
-    |> Enum.map(fn water -> Map.get(almanac.water_to_light, water, water) end)
-    |> Enum.map(fn light -> Map.get(almanac.light_to_temperature, light, light) end)
-    |> Enum.map(fn temp -> Map.get(almanac.temperature_to_humidity, temp, temp) end)
-    |> Enum.map(fn humidity -> Map.get(almanac.humidity_to_location, humidity, humidity) end)
+    |> Enum.map(fn seed -> map_source_to_dest(seed, almanac.seed_to_soil) end)
+    |> Enum.map(fn soil -> map_source_to_dest(soil, almanac.soil_to_fertilizer) end)
+    |> Enum.map(fn fertilizer -> map_source_to_dest(fertilizer, almanac.fertilizer_to_water) end)
+    |> Enum.map(fn water -> map_source_to_dest(water, almanac.water_to_light) end)
+    |> Enum.map(fn light -> map_source_to_dest(light, almanac.light_to_temperature) end)
+    |> Enum.map(fn temp -> map_source_to_dest(temp, almanac.temperature_to_humidity) end)
+    |> Enum.map(fn humidity -> map_source_to_dest(humidity, almanac.humidity_to_location) end)
     |> Enum.min()
   end
 
@@ -70,11 +74,23 @@ defmodule AdventOfCode2023.Day05 do
     ranges
     |> Enum.map(&parse_space_separated_numbers/1)
     # take for granted that there are exactly three numbers in each row
-    |> Enum.flat_map(fn [dest_start, source_start, range_length] ->
-      0..(range_length - 1)
-      |> Enum.map(fn i -> {source_start + i, dest_start + i} end)
+    |> Enum.map(fn [dest_start, source_start, range_length] ->
+      %AlmanacMapping{
+        start: source_start,
+        end: source_start + (range_length - 1),
+        offset: dest_start - source_start
+      }
     end)
-    |> Map.new()
+  end
+
+  defp map_source_to_dest(source, mappings) do
+    case Enum.find(mappings, fn m -> m.start <= source && m.end >= source end) do
+      nil ->
+        source
+
+      mapping ->
+        source + mapping.offset
+    end
   end
 
   defp parse_space_separated_numbers(input) do

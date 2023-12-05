@@ -45,9 +45,8 @@ defmodule AdventOfCode2023.Day05Test do
     assert Day05.part_one(@sample_input) == 35
   end
 
-  @tag :skip
   test "part 1 solution" do
-    assert Day05.part_one(@puzzle_input) == nil
+    assert Day05.part_one(@puzzle_input) == 806_029_445
   end
 
   @tag :skip
