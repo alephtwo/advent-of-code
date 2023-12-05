@@ -20,7 +20,7 @@ defmodule AdventOfCode2023.Day05 do
   @doc """
   """
   def part_one(input) do
-    almanac = parse_input(input)
+    almanac = parse_input(input, fn seeds -> seeds |> parse_space_separated_numbers() end)
 
     almanac.seeds
     |> Enum.map(fn seed -> map_source_to_dest(seed, almanac.seed_to_soil) end)
@@ -36,11 +36,36 @@ defmodule AdventOfCode2023.Day05 do
   @doc """
   """
   def part_two(input) do
-    input
-    |> parse_input()
+    almanac =
+      parse_input(input, fn seeds ->
+        seeds
+        |> parse_space_separated_numbers()
+        |> Enum.chunk_every(2)
+        |> Enum.map(fn [a, r] -> {a, a + r - 1} end)
+      end)
+
+    find_lowest_location_with_seed(almanac)
   end
 
-  defp parse_input(input) do
+  defp find_lowest_location_with_seed(almanac = %Almanac{}, location \\ 0) do
+    seed =
+      location
+      |> map_dest_to_source(almanac.humidity_to_location)
+      |> map_dest_to_source(almanac.temperature_to_humidity)
+      |> map_dest_to_source(almanac.light_to_temperature)
+      |> map_dest_to_source(almanac.water_to_light)
+      |> map_dest_to_source(almanac.fertilizer_to_water)
+      |> map_dest_to_source(almanac.soil_to_fertilizer)
+      |> map_dest_to_source(almanac.seed_to_soil)
+
+    if Enum.any?(almanac.seeds, fn {s, e} -> seed >= s && seed <= e end) do
+      location
+    else
+      find_lowest_location_with_seed(almanac, location + 1)
+    end
+  end
+
+  defp parse_input(input, seed_parser) do
     [
       seeds,
       seed_to_soil,
@@ -53,10 +78,7 @@ defmodule AdventOfCode2023.Day05 do
     ] = String.split(input, "\n\n", trim: true)
 
     %Almanac{
-      seeds:
-        seeds
-        |> String.replace_prefix("seeds: ", "")
-        |> parse_space_separated_numbers(),
+      seeds: seed_parser.(String.replace_prefix(seeds, "seeds: ", "")),
       seed_to_soil: parse_almanac_ranges(seed_to_soil),
       soil_to_fertilizer: parse_almanac_ranges(soil_to_fertilizer),
       fertilizer_to_water: parse_almanac_ranges(fertilizer_to_water),
@@ -90,6 +112,16 @@ defmodule AdventOfCode2023.Day05 do
 
       mapping ->
         source + mapping.offset
+    end
+  end
+
+  defp map_dest_to_source(dest, mappings) do
+    case Enum.find(mappings, fn m -> dest >= m.start + m.offset && dest <= m.end + m.offset end) do
+      nil ->
+        dest
+
+      mapping ->
+        dest - mapping.offset
     end
   end
 

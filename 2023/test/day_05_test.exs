@@ -49,12 +49,10 @@ defmodule AdventOfCode2023.Day05Test do
     assert Day05.part_one(@puzzle_input) == 806_029_445
   end
 
-  @tag :skip
   test "part 2 example" do
-    assert Day05.part_two(@sample_input) == nil
+    assert Day05.part_two(@sample_input) == 46
   end
 
-  @tag :skip
   test "part 2 solution" do
     assert Day05.part_two(@puzzle_input) == nil
   end
