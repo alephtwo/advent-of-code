@@ -16,8 +16,17 @@ defmodule AdventOfCode2023.Day05 do
   @doc """
   """
   def part_one(input) do
-    input
-    |> parse_input()
+    almanac = parse_input(input)
+
+    almanac.seeds
+    |> Enum.map(fn seed -> Map.get(almanac.seed_to_soil, seed, seed) end)
+    |> Enum.map(fn soil -> Map.get(almanac.soil_to_fertilizer, soil, soil) end)
+    |> Enum.map(fn fertilizer -> Map.get(almanac.fertilizer_to_water, fertilizer, fertilizer) end)
+    |> Enum.map(fn water -> Map.get(almanac.water_to_light, water, water) end)
+    |> Enum.map(fn light -> Map.get(almanac.light_to_temperature, light, light) end)
+    |> Enum.map(fn temp -> Map.get(almanac.temperature_to_humidity, temp, temp) end)
+    |> Enum.map(fn humidity -> Map.get(almanac.humidity_to_location, humidity, humidity) end)
+    |> Enum.min()
   end
 
   @doc """
@@ -61,11 +70,11 @@ defmodule AdventOfCode2023.Day05 do
     ranges
     |> Enum.map(&parse_space_separated_numbers/1)
     # take for granted that there are exactly three numbers in each row
-    |> Enum.map(fn [dest_start, source_start, range_length] ->
+    |> Enum.flat_map(fn [dest_start, source_start, range_length] ->
       0..(range_length - 1)
       |> Enum.map(fn i -> {source_start + i, dest_start + i} end)
     end)
-    |> Enum.reduce(%{}, fn a, acc -> Map.merge(acc, Map.new(a)) end)
+    |> Map.new()
   end
 
   defp parse_space_separated_numbers(input) do
